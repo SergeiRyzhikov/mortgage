@@ -1,0 +1,22 @@
+/* Card.module.css */
+
+.card {
+    padding: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    border-color: #007bff;
+}
+
+.card.selected {
+    border-color: #007bff;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+.card-text {
+    font-weight: 800;
+}
