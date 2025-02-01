@@ -102,17 +102,6 @@ const MortgageSelection: React.FC = () => {
                         value={initialPayment}
                         setValue={setInitialPayment}
                     />
-                    {/* <label className="form-label">
-                        Первоначальный взнос:
-                        <input
-                            type="number"
-                            value={initialPayment}
-                            onChange={(e) => setInitialPayment(Number(e.target.value))}
-                            className="form-input"
-                            // min="0"
-                            max="100000000"
-                        />
-                    </label> */}
                 </div>
             )}
             <Error message={errorMessage} setMessage={setErrorMessage} />

@@ -37,7 +37,7 @@ body {
 }
 
 .button {
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
   background-color: #007bff;
   color: #fff;
   padding: 0.5rem 1.5rem;
@@ -105,7 +105,7 @@ body {
 }
 
 
-.file-input {
+/* .file-input {
   color: transparent;
 }
 .file-input::-webkit-file-upload-button {
@@ -135,5 +135,5 @@ body {
 }
 .file-input:active::before {
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
-}
+} */
 

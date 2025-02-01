@@ -34,16 +34,16 @@ const UploadCreditHistory: React.FC = () => {
         <div className="container" >
             <h1 className="title">Анкета</h1>
             <div className="question">
-                <p className="question-text">4. Загрузите PDF-файл кредитной истории, если его нет, также жмите продолжить.</p>
-                {/* <h3>Если файла нет, также нажмите продолжить</h3> */}
-                <input
-                    type="file"
-                    accept="application/pdf"
-                    onChange={handleFileChange}
-                    className="file-input"
-                />
+                <p className="question-text">4. Загрузите PDF-файл кредитной истории, если его нет, также жмите продолжить</p>
+                <label className="custom-file-upload">
+                    <input type="file" accept="application/pdf" onChange={handleFileChange} />
+                    {file ?
+                        `${file.name}` :
+                        'Выбрать файл'
+                    }
+                </label>
 
-                {file && <p className="file-name">Выбранный файл: {file.name}</p>}
+                {/* {file && <p className="file-name">Выбранный файл: {file.name}</p>} */}
             </div>
             <button onClick={handleUpload} className="button">Продолжить</button>
         </div>
