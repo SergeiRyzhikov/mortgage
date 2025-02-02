@@ -3,14 +3,14 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import NumberInput from "../components/NumberInput/NumberInput";
 
-const Extra3: React.FC = () => {
+const Question8: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<number>(0);
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
     const handleContinue = () => {
-        updateAnswer('доп3', `${firstAnswer}`)
-        navigate('/extra4')
+        updateAnswer('8', `${firstAnswer}`)
+        navigate('/9')
         console.log(answers)
     };
 
@@ -23,11 +23,11 @@ const Extra3: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.3. Какие лимиты по картам?</p>
+                <p className="question-text">8. Количество детей, указанное в паспорте</p>
                 <div className="grid-container">
                     <NumberInput
                         min={0}
-                        max={99999999}
+                        max={99}
                         label={''}
                         value={firstAnswer}
                         setValue={setFirstAnswer}
@@ -41,4 +41,4 @@ const Extra3: React.FC = () => {
     );
 };
 
-export default Extra3;
+export default Question8;

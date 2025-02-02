@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
-import NumberInput from "../components/NumberInput/NumberInput";
 
-const Extra3: React.FC = () => {
-    const [firstAnswer, setFirstAnswer] = useState<number>(0);
+const Question6: React.FC = () => {
+    const [firstAnswer, setFirstAnswer] = useState<string>("2005-10-10");
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
     const handleContinue = () => {
-        updateAnswer('доп3', `${firstAnswer}`)
-        navigate('/extra4')
+        console.log(firstAnswer)
+        updateAnswer('6', `${firstAnswer}`)
+        navigate('/7')
+
         console.log(answers)
     };
 
@@ -23,15 +24,18 @@ const Extra3: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.3. Какие лимиты по картам?</p>
+                <p className="question-text">6. Введите свою дату рождения</p>
                 <div className="grid-container">
-                    <NumberInput
-                        min={0}
-                        max={99999999}
-                        label={''}
+                    <input
+                        type="date"
+                        name="trip-start"
                         value={firstAnswer}
-                        setValue={setFirstAnswer}
+                        min="1900-01-01"
+                        max="2024-12-31"
+                        className="date-input"
+                        onChange={(e) => setFirstAnswer(e.target.value)}
                     />
+
                 </div>
             </div>
             <button onClick={handleContinue} className="button">
@@ -41,4 +45,4 @@ const Extra3: React.FC = () => {
     );
 };
 
-export default Extra3;
+export default Question6;

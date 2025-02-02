@@ -27,7 +27,7 @@ const Extra2: React.FC = () => {
                 <div className="grid-container">
                     <NumberInput
                         min={0}
-                        max={10}
+                        max={99}
                         label={''}
                         value={firstAnswer}
                         setValue={setFirstAnswer}

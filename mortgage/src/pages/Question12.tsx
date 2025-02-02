@@ -4,7 +4,7 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
-const Extra1: React.FC = () => {
+const Question12: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
@@ -16,8 +16,8 @@ const Extra1: React.FC = () => {
 
     const handleContinue = () => {
         if (firstAnswer) {
-            updateAnswer('доп1', `${firstAnswer}`)
-            navigate('/extra2')
+            updateAnswer('12', `${firstAnswer}`)
+            navigate('/13')
         }
         else {
             setErrorMessage('Пожалуйста, заполните все поля.')
@@ -34,31 +34,43 @@ const Extra1: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.1. Что брали из действующих кредитов?</p>
-                <div className="grid-container" style={{'gridTemplateColumns': 'repeat(2, 1fr)'}}>
+                <p className="question-text">12. Сфера деятельности</p>
+                <div className="grid-container">
                     <Card
-                        isSelected={firstAnswer === "Потребительский кредит"}
-                        onClick={() => handleFirstChoice("Потребительский кредит")}
+                        isSelected={firstAnswer === "Учитель"}
+                        onClick={() => handleFirstChoice("Учитель")}
                     >
-                        Потребительский кредит
+                        Учитель
                     </Card>
                     <Card
-                        isSelected={firstAnswer === "Ипотека"}
-                        onClick={() => handleFirstChoice("Ипотека")}
+                        isSelected={firstAnswer === "Врач"}
+                        onClick={() => handleFirstChoice("Врач")}
                     >
-                        Ипотека
+                        Врач
                     </Card>
                     <Card
-                        isSelected={firstAnswer === "Кредитная карта"}
-                        onClick={() => handleFirstChoice("Кредитная карта")}
+                        isSelected={firstAnswer === "IT"}
+                        onClick={() => handleFirstChoice("IT")}
                     >
-                        Кредитная карта
+                        IT
                     </Card>
                     <Card
-                        isSelected={firstAnswer === "Ничего"}
-                        onClick={() => handleFirstChoice("Ничего")}
+                        isSelected={firstAnswer === "ИП"}
+                        onClick={() => handleFirstChoice("ИП")}
                     >
-                        Ничего
+                        ИП
+                    </Card>
+                    <Card
+                        isSelected={firstAnswer === "Государственная компания"}
+                        onClick={() => handleFirstChoice("Государственная компания")}
+                    >
+                        Государственная компания
+                    </Card>
+                    <Card
+                        isSelected={firstAnswer === "Прочее"}
+                        onClick={() => handleFirstChoice("Прочее")}
+                    >
+                        Прочее
                     </Card>
                 </div>
             </div>
@@ -70,4 +82,4 @@ const Extra1: React.FC = () => {
     );
 };
 
-export default Extra1;
+export default Question12;

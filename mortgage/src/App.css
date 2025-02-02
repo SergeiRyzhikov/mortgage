@@ -137,3 +137,39 @@ body {
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
 } */
 
+input[type="date"] {
+  /* width: 100%; */
+  /* max-width: 300px; */
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* При наведении */
+input[type="date"]:hover {
+  border-color: #007bff;
+}
+
+/* При фокусе */
+input[type="date"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Убираем стандартную иконку календаря в Chrome, Safari */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  transform: scale(1.1);
+}

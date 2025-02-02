@@ -23,11 +23,11 @@ const Extra4: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.4. Какие платежи по кредитам?</p>
+                <p className="question-text">4.4. Какие платежи по кредитам (в месяц) ?</p>
                 <div className="grid-container">
                     <NumberInput
                         min={0}
-                        max={3000000}
+                        max={999999999}
                         label={''}
                         value={firstAnswer}
                         setValue={setFirstAnswer}

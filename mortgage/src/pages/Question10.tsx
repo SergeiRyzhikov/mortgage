@@ -3,9 +3,11 @@ import Card from "../components/Card/Card";
 import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
+import NumberInput from "../components/NumberInput/NumberInput";
 
-const Extra1: React.FC = () => {
+const Question9: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
+    const [secondAnswer, setSecondAnswer] = useState<number>(0);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
@@ -16,8 +18,8 @@ const Extra1: React.FC = () => {
 
     const handleContinue = () => {
         if (firstAnswer) {
-            updateAnswer('доп1', `${firstAnswer}`)
-            navigate('/extra2')
+            updateAnswer('10', `${firstAnswer}|${secondAnswer}`);
+            navigate('/11')
         }
         else {
             setErrorMessage('Пожалуйста, заполните все поля.')
@@ -34,32 +36,33 @@ const Extra1: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.1. Что брали из действующих кредитов?</p>
-                <div className="grid-container" style={{'gridTemplateColumns': 'repeat(2, 1fr)'}}>
+                <p className="question-text">10. Укажите свою заработную плату в рублях (тип и сумму)</p>
+                <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(1, 1fr)' }}>
                     <Card
-                        isSelected={firstAnswer === "Потребительский кредит"}
-                        onClick={() => handleFirstChoice("Потребительский кредит")}
+                        isSelected={firstAnswer === "Официальная"}
+                        onClick={() => handleFirstChoice("Официальная")}
                     >
-                        Потребительский кредит
+                        Официальная
                     </Card>
                     <Card
-                        isSelected={firstAnswer === "Ипотека"}
-                        onClick={() => handleFirstChoice("Ипотека")}
+                        isSelected={firstAnswer === "Неофицальная"}
+                        onClick={() => handleFirstChoice("Неофицальная")}
                     >
-                        Ипотека
+                        Неофицальная
                     </Card>
                     <Card
-                        isSelected={firstAnswer === "Кредитная карта"}
-                        onClick={() => handleFirstChoice("Кредитная карта")}
+                        isSelected={firstAnswer === "Комбинированная"}
+                        onClick={() => handleFirstChoice("Комбинированная")}
                     >
-                        Кредитная карта
+                        Комбинированная
                     </Card>
-                    <Card
-                        isSelected={firstAnswer === "Ничего"}
-                        onClick={() => handleFirstChoice("Ничего")}
-                    >
-                        Ничего
-                    </Card>
+                    <NumberInput
+                        min={0}
+                        max={9999999}
+                        label={''}
+                        value={secondAnswer}
+                        setValue={setSecondAnswer}
+                    />
                 </div>
             </div>
             <Error message={errorMessage} setMessage={setErrorMessage} />
@@ -70,4 +73,4 @@ const Extra1: React.FC = () => {
     );
 };
 
-export default Extra1;
+export default Question9;

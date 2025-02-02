@@ -15,6 +15,14 @@ import Extra5 from "./pages/Extra5";
 import Extra6 from "./pages/Extra6";
 import Extra7 from "./pages/Extra7";
 import Extra8 from "./pages/Extra8";
+import Question5 from "./pages/Question5";
+import Question6 from "./pages/Question6";
+import Question7 from "./pages/Question7";
+import Question8 from "./pages/Question8";
+import Question9 from "./pages/Question9";
+import Question10 from "./pages/Question10";
+import Question11 from "./pages/Question11";
+import Question12 from "./pages/Question12";
 
 const App: React.FC = () => {
   return (
@@ -26,6 +34,14 @@ const App: React.FC = () => {
           <Route path="/2" element={<Question2 />} />
           <Route path="/3" element={<Question3 />} />
           <Route path="/4" element={<UploadCreditHistory />} />
+          <Route path="/5" element={<Question5 />} />
+          <Route path="/6" element={<Question6 />} />
+          <Route path="/7" element={<Question7 />} />
+          <Route path="/8" element={<Question8 />} />
+          <Route path="/9" element={<Question9 />} />
+          <Route path="/10" element={<Question10 />} />
+          <Route path="/11" element={<Question11 />} />
+          <Route path="/12" element={<Question12 />} />
           <Route path="/extra1" element={<Extra1 />} />
           <Route path="/extra2" element={<Extra2 />} />
           <Route path="/extra3" element={<Extra3 />} />

@@ -4,7 +4,7 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
-const Extra7: React.FC = () => {
+const Question7: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
@@ -16,8 +16,8 @@ const Extra7: React.FC = () => {
 
     const handleContinue = () => {
         if (firstAnswer) {
-            updateAnswer('доп7', `${firstAnswer}`)
-            navigate('/extra8')
+            updateAnswer('7', `${firstAnswer}`)
+            navigate('/8')
         }
         else {
             setErrorMessage('Пожалуйста, заполните все поля.')
@@ -34,19 +34,19 @@ const Extra7: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.7. Брали ли кредит или ипотеку в последние 6 месяцев?</p>
+                <p className="question-text">7. Ваше семейное положение</p>
                 <div className="grid-container">
                     <Card
-                        isSelected={firstAnswer === "Да"}
-                        onClick={() => handleFirstChoice("Да")}
+                        isSelected={firstAnswer === "В браке"}
+                        onClick={() => handleFirstChoice("В браке")}
                     >
-                        Да
+                        В браке
                     </Card>
                     <Card
-                        isSelected={firstAnswer === "Нет"}
-                        onClick={() => handleFirstChoice("Нет")}
+                        isSelected={firstAnswer === "Один"}
+                        onClick={() => handleFirstChoice("Один")}
                     >
-                        Нет
+                        Один
                     </Card>
                 </div>
             </div>
@@ -58,6 +58,4 @@ const Extra7: React.FC = () => {
     );
 };
 
-export default Extra7;
-
-
+export default Question7;
