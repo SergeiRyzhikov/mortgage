@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import MortgageSelection from "./components/MortgageSelection";
+import MortgageSelection from "./pages/MortgageSelection";
 import './App.css'
 import Question1 from "./pages/Question1";
 import { SurveyProvider } from "./SurveyContext";
@@ -29,7 +29,7 @@ const App: React.FC = () => {
     <SurveyProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<MortgageSelection />} />
+          
           <Route path="/1" element={<Question1 />} />
           <Route path="/2" element={<Question2 />} />
           <Route path="/3" element={<Question3 />} />
@@ -42,6 +42,7 @@ const App: React.FC = () => {
           <Route path="/10" element={<Question10 />} />
           <Route path="/11" element={<Question11 />} />
           <Route path="/12" element={<Question12 />} />
+          <Route path="/13" element={<MortgageSelection />} />
           <Route path="/extra1" element={<Extra1 />} />
           <Route path="/extra2" element={<Extra2 />} />
           <Route path="/extra3" element={<Extra3 />} />

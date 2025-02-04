@@ -3,9 +3,10 @@ import Card from "../components/Card/Card";
 import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
-import NumberInput from "./NumberInput/NumberInput";
+import NumberInput from "../components/NumberInput/NumberInput";
 
 const MortgageSelection: React.FC = () => {
+    const [selectedCreditType, setSelectedCreditType] = useState<string | null>(null);
     const [selectedMortgage, setSelectedMortgage] = useState<string | null>(null);
     const [term, setTerm] = useState<number>(10);
     const [amount, setAmount] = useState<number>(1000000);
@@ -13,6 +14,8 @@ const MortgageSelection: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const { answers, updateAnswer } = useSurvey();
     const navigate = useNavigate();
+
+    const creditTypes = ["Ипотека", "Потребительский кредит", "Автокредит", "Микрозайм"];
 
     const mortgageTypes = [
         { type: "Дальневосточная", details: "Максимум на 20 лет, с 21 до 65 лет, семья (учителя, врачи, IT до 36 лет), 2% годовых", maxTerm: 20 },
@@ -23,15 +26,19 @@ const MortgageSelection: React.FC = () => {
         { type: "Нельготная", details: "Максимум на 30 лет, людям с 20 до 65 лет, около 24% годовых", maxTerm: 30 },
     ];
 
+    const handleSelectCreditType = (type: string) => {
+        setSelectedCreditType(type);
+        setSelectedMortgage(null);
+        setErrorMessage(null);
+    };
+
     const handleSelectMortgage = (type: string) => {
         setSelectedMortgage(type);
-        // setTerm("");
         setErrorMessage(null);
     };
 
     const handleContinue = () => {
-        if (!selectedMortgage || !term || !amount || !initialPayment) {
-            console.log('не все заполнено')
+        if (!selectedCreditType || (selectedCreditType === "Ипотека" && !selectedMortgage) || !term || !amount || !initialPayment) {
             setErrorMessage("Пожалуйста, заполните все поля.");
             return;
         }
@@ -42,39 +49,63 @@ const MortgageSelection: React.FC = () => {
         }
 
         setErrorMessage(null);
+        console.log("Selected Credit Type:", selectedCreditType);
         console.log("Selected Mortgage:", selectedMortgage);
         console.log("Term:", term);
         console.log("Amount:", amount);
         console.log("Initial Payment:", initialPayment);
-        updateAnswer('type', selectedMortgage)
-        updateAnswer('term', String(term))
-        updateAnswer('amount', String(amount))
-        updateAnswer('initial_payment', String(initialPayment))
-        navigate('/1')
+
+        updateAnswer("credit_type", selectedCreditType);
+        if (selectedCreditType === "Ипотека") {
+            updateAnswer("mortgage_type", selectedMortgage!);
+        }
+        updateAnswer("term", String(term));
+        updateAnswer("amount", String(amount));
+        updateAnswer("initial_payment", String(initialPayment));
+
+        navigate("/14");
     };
 
     const getMaxTerm = () => {
+        if (selectedCreditType !== "Ипотека") return 30;
         const selected = mortgageTypes.find((mortgage) => mortgage.type === selectedMortgage);
         return selected ? selected.maxTerm : 0;
     };
 
     return (
         <div className="container">
-            <h1 className="title">Выберите вид ипотеки</h1>
-            <div className="grid-container">
-                {mortgageTypes.map(({ type, details }) => (
+            <p className="question-text">13. Выберите тип кредита</p>
+            <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(2, 1fr)' }}>
+                {creditTypes.map((type) => (
                     <Card
                         key={type}
-                        isSelected={selectedMortgage === type}
-                        onClick={() => handleSelectMortgage(type)}
+                        isSelected={selectedCreditType === type}
+                        onClick={() => handleSelectCreditType(type)}
                     >
-                        <p className="card-text">{type}</p>
-                        <p className="card-details">{details}</p>
+                        {type}
                     </Card>
                 ))}
             </div>
 
-            {selectedMortgage && (
+            {selectedCreditType === "Ипотека" && (
+                <>
+                    <p className="question-text">Выберите вид ипотеки</p>
+                    <div className="grid-container">
+                        {mortgageTypes.map(({ type, details }) => (
+                            <Card
+                                key={type}
+                                isSelected={selectedMortgage === type}
+                                onClick={() => handleSelectMortgage(type)}
+                            >
+                                <p className="card-text">{type}</p>
+                                <p className="card-details">{details}</p>
+                            </Card>
+                        ))}
+                    </div>
+                </>
+            )}
+
+            {(selectedMortgage || (selectedCreditType && selectedCreditType!=='Ипотека')) && 
                 <div className="form">
                     <label className="form-label">
                         Срок (лет, максимум {getMaxTerm()}):
@@ -91,24 +122,26 @@ const MortgageSelection: React.FC = () => {
                     <NumberInput
                         min={0}
                         max={100000000}
-                        label={'Сумма ипотеки:'}
+                        label={"Сумма кредита:"}
                         value={amount}
                         setValue={setAmount}
                     />
                     <NumberInput
                         min={0}
                         max={amount}
-                        label={'Первоначальный взнос (не менее 15%):'}
+                        label={"Первоначальный взнос (не менее 15%):"}
                         value={initialPayment}
                         setValue={setInitialPayment}
                     />
                 </div>
-            )}
+            }
             <Error message={errorMessage} setMessage={setErrorMessage} />
             <button onClick={handleContinue} className="button">
                 Продолжить
             </button>
+
         </div>
+
     );
 };
 
