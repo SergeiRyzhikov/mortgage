@@ -4,6 +4,7 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 import NumberInput from "../components/NumberInput/NumberInput";
+import { mortgageTypes } from "../utils";
 
 const MortgageSelection: React.FC = () => {
     const [selectedCreditType, setSelectedCreditType] = useState<string | null>(null);
@@ -16,15 +17,6 @@ const MortgageSelection: React.FC = () => {
     const navigate = useNavigate();
 
     const creditTypes = ["Ипотека", "Потребительский кредит", "Автокредит", "Микрозайм"];
-
-    const mortgageTypes = [
-        { type: "Дальневосточная", details: "Максимум на 20 лет, с 21 до 65 лет, семья (учителя, врачи, IT до 36 лет), 2% годовых", maxTerm: 20 },
-        { type: "Сельская", details: "Максимум на 25 лет, 3% годовых, с 21 до 65 лет", maxTerm: 25 },
-        { type: "IT", details: "Максимум на 20 лет, 6% годовых, с 21 до 65 лет, аккредитованная компания", maxTerm: 20 },
-        { type: "Арктическая", details: "Максимум на 20 лет, 6% годовых, с 21 до 65 лет", maxTerm: 20 },
-        { type: "Семейная", details: "Максимум на 20 лет, 6% годовых, с 21 до 65 лет, 1 ребенок (2019+ года рождения) или 2 ребенка меньше 18 лет", maxTerm: 20 },
-        { type: "Нельготная", details: "Максимум на 30 лет, людям с 20 до 65 лет, около 24% годовых", maxTerm: 30 },
-    ];
 
     const handleSelectCreditType = (type: string) => {
         setSelectedCreditType(type);
@@ -62,6 +54,9 @@ const MortgageSelection: React.FC = () => {
         updateAnswer("term", String(term));
         updateAnswer("amount", String(amount));
         updateAnswer("initial_payment", String(initialPayment));
+
+        const selected = mortgageTypes.find((mortgage) => mortgage.type === selectedMortgage);
+        updateAnswer('procent', String(selected?.procent))
 
         navigate("/14");
     };
@@ -105,7 +100,7 @@ const MortgageSelection: React.FC = () => {
                 </>
             )}
 
-            {(selectedMortgage || (selectedCreditType && selectedCreditType!=='Ипотека')) && 
+            {(selectedMortgage || (selectedCreditType && selectedCreditType !== 'Ипотека')) &&
                 <div className="form">
                     <label className="form-label">
                         Срок (лет, максимум {getMaxTerm()}):

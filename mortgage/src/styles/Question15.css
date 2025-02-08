@@ -1,0 +1,141 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.question {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.question-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Контейнер для инпута */
+.input-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Инпут */
+.region-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.region-input:focus {
+    border-color: #007bff;
+}
+
+/* Список подсказок */
+.suggestions-list {
+    position: absolute;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 5px;
+    padding: 0;
+    list-style: none;
+    max-height: 250px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+/* Стиль каждого элемента списка */
+.suggestions-list li {
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.suggestions-list li:hover {
+    background-color: #f1f1f1;
+}
+
+/* Кнопка "Продолжить" */
+.button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+/* 🔹 АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .question {
+        max-width: 100%;
+    }
+
+    .question-text {
+        font-size: 1rem;
+    }
+
+    .input-container {
+        max-width: 90%;
+    }
+
+    .region-input {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    .suggestions-list {
+        max-height: 200px;
+    }
+
+    .suggestions-list li {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .button {
+        width: 60%;
+        max-width: 300px;
+        font-size: 1rem;
+        padding: 10px;
+    }
+}

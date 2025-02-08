@@ -1,0 +1,93 @@
+/* .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f7f7f7;
+} */
+
+.approval-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.approved {
+    color: #28a745;
+}
+
+.declined {
+    color: #dc3545;
+}
+
+.result-box,
+.recommendation-box {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    border: 2px solid #002366;
+    border-radius: 8px;
+    background-color: white;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.result-box h2,
+.recommendation-box h2 {
+    font-size: 1.5rem;
+    color: #002366;
+    margin-bottom: 10px;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+ul li {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .approval-title {
+        font-size: 1.8rem;
+    }
+
+    .result-box,
+    .recommendation-box {
+        max-width: 90%;
+    }
+
+    ul li {
+        font-size: 0.9rem;
+    }
+
+    .button {
+        width: 60%;
+        max-width: 300px;
+    }
+}

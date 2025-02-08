@@ -1,0 +1,138 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.question {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.question-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Контейнер для инпутов (в один столбец) */
+.input-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+/* Контейнер для одного инпута */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap:10px;
+    max-width: 400px;
+    position: relative;
+}
+
+/* Кнопка удаления справа от инпута */
+.remove-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.remove-button:hover {
+    background-color: #c82333;
+}
+
+/* Кнопка добавления инпута */
+.add-button {
+    /* width: 100%; */
+    max-width: 400px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.add-button:hover {
+    background-color: #0056b3;
+}
+
+/* Кнопка продолжить */
+.button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .question {
+        max-width: 100%;
+    }
+
+    .input-wrapper {
+        max-width: 90%;
+    }
+
+    .remove-button {
+        padding: 6px 10px;
+    }
+
+    .add-button {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .button {
+        width: 60%;
+        max-width: 300px;
+    }
+}

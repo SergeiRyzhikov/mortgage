@@ -4,20 +4,22 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
-const Question7: React.FC = () => {
+const Question16: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
+    const choiceTypes = ['Автомобиль', 'Квартира/Дом', 'Земельный участок']
+    
     const handleFirstChoice = (answer: string) => {
         setFirstAnswer(answer);
     };
 
     const handleContinue = () => {
         if (firstAnswer) {
-            updateAnswer('7', `${firstAnswer}`)
-            navigate('/8')
+            updateAnswer('16', `${firstAnswer}`)
+            navigate('/17')
         }
         else {
             setErrorMessage('Пожалуйста, заполните все поля.')
@@ -34,20 +36,17 @@ const Question7: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">7. Ваше семейное положение</p>
-                <div className="grid-container">
-                    <Card
-                        isSelected={firstAnswer === "Женат/замужем"}
-                        onClick={() => handleFirstChoice("Женат/замужем")}
-                    >
-                        Женат/замужем
-                    </Card>
-                    <Card
-                        isSelected={firstAnswer === "Один"}
-                        onClick={() => handleFirstChoice("Один")}
-                    >
-                        Один
-                    </Card>
+                <p className="question-text">16. Наличие</p>
+                <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(1, 1fr)' }}>
+                    {choiceTypes.map((type) => (
+                        <Card
+                            key={type}
+                            isSelected={firstAnswer === type}
+                            onClick={() => handleFirstChoice(type)}
+                        >
+                            {type}
+                        </Card>
+                    ))}
                 </div>
             </div>
             <Error message={errorMessage} setMessage={setErrorMessage} />
@@ -58,4 +57,4 @@ const Question7: React.FC = () => {
     );
 };
 
-export default Question7;
+export default Question16;

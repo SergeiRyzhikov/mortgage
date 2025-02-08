@@ -23,13 +23,19 @@ import Question9 from "./pages/Question9";
 import Question10 from "./pages/Question10";
 import Question11 from "./pages/Question11";
 import Question12 from "./pages/Question12";
+import Question14 from "./pages/Question14";
+import Question15 from "./pages/Question15";
+import Question16 from "./pages/Question16";
+import Question17 from "./pages/Question17";
+import Question18 from "./pages/Question18";
+import Result from "./pages/Result";
 
 const App: React.FC = () => {
   return (
     <SurveyProvider>
       <Router>
         <Routes>
-          
+
           <Route path="/1" element={<Question1 />} />
           <Route path="/2" element={<Question2 />} />
           <Route path="/3" element={<Question3 />} />
@@ -43,6 +49,12 @@ const App: React.FC = () => {
           <Route path="/11" element={<Question11 />} />
           <Route path="/12" element={<Question12 />} />
           <Route path="/13" element={<MortgageSelection />} />
+          <Route path="/14" element={<Question14 />} />
+          <Route path="/15" element={<Question15 />} />
+          <Route path="/16" element={<Question16 />} />
+          <Route path="/17" element={<Question17 />} />
+          <Route path="/18" element={<Question18 />} />
+          <Route path="/result" element={<Result />} />
           <Route path="/extra1" element={<Extra1 />} />
           <Route path="/extra2" element={<Extra2 />} />
           <Route path="/extra3" element={<Extra3 />} />
@@ -59,52 +71,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-// 3 вопрос
-// error message
-// полностью покртыие
-// спросить про вид и git
-
-
-// Вопросы в анкете:
-// Есть ли у Вас судимость? (Да/Нет). Если да, то надо спросить, по экономической ли статье
-// Являетесь ли Вы зарплатником банка? (Желательно знать какого)
-// Есть ли у Вас исполнительные производства в ФССП? (Да/Нет)
-// Загрузите, пожалуйста, свою кредитную историю (PDF-файл с кредитной историей)
-// Скоринговый балл
-// Дата рождения
-// Семейное положение
-// Количество детей, указанное в паспорте
-// Являетесь ли резидентом РФ? (Да/Нет)
-// Укажите свою заработную плату в месяц (Её тип и сумму):
-// официальная
-// неофициальная
-// комбинированная
-// Стаж работы на последнем месте. С какой даты?
-// Сфера деятельности:
-// учитель
-// врач
-// IT
-// ИП (потребуется справка по форме банка)
-// государственная компания
-// прочее
-// Вид кредита:
-// ипотека
-// потребительский кредит
-// автокредит
-// микрозайм
-// Дата рождения ребёнка (каждого)
-// Регион, где планируете взять ипотеку
-// Наличие машины или квартиры, дома или земельного участка
-// Образование:
-// высшее
-// среднее специальное
-// среднее техническое
-// среднее общее
-// основное общее
-// Есть ли иждивенцы?
-// Текущая финансовая нагрузка (если не указал кредитную историю, то указывает тут сам):
-// Считаем все лимиты по кредитным картам, берём от них 10%
-// Сумма всех текущих платежей по всем кредитам
-// Прибавить за каждого взрослого 20к, за каждого ребёнка 18к
-// Умножаем это на 2 и получаем фин. нагрузку
-// Есть ли действующая просрочка?
