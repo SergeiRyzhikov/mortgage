@@ -8,21 +8,36 @@ import NumberInput from "../components/NumberInput/NumberInput";
 const Question9: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [secondAnswer, setSecondAnswer] = useState<number>(0);
+    const [thirdAnswer, setThirdAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    
+    const choiceTypes = ['Официальная', 'Неофицальная', 'Комбинированная']
+    const choiceTypes2 = ['Да', 'Нет']
+
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
     const handleFirstChoice = (answer: string) => {
         setFirstAnswer(answer);
+        if (answer !== "Неофицальная") {
+            setThirdAnswer(null);
+            return
+        }
     };
 
     const handleContinue = () => {
-        if (firstAnswer) {
+        if ((!firstAnswer) || (firstAnswer === "Неофицальная" && !thirdAnswer)) {
+            setErrorMessage('Пожалуйста, заполните все поля.')
+            return
+        }
+
+        if (firstAnswer !== 'Неофицальная') {
             updateAnswer('10', `${firstAnswer}|${secondAnswer}`);
             navigate('/11')
         }
         else {
-            setErrorMessage('Пожалуйста, заполните все поля.')
+            updateAnswer('10', `${firstAnswer}|${secondAnswer}|${thirdAnswer}`);
+            navigate('/11')
         }
         console.log(answers)
     };
@@ -38,24 +53,31 @@ const Question9: React.FC = () => {
             <div className="question">
                 <p className="question-text">10. Укажите свою заработную плату в рублях (тип и сумму)</p>
                 <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(1, 1fr)' }}>
-                    <Card
-                        isSelected={firstAnswer === "Официальная"}
-                        onClick={() => handleFirstChoice("Официальная")}
-                    >
-                        Официальная
-                    </Card>
-                    <Card
-                        isSelected={firstAnswer === "Неофицальная"}
-                        onClick={() => handleFirstChoice("Неофицальная")}
-                    >
-                        Неофицальная
-                    </Card>
-                    <Card
-                        isSelected={firstAnswer === "Комбинированная"}
-                        onClick={() => handleFirstChoice("Комбинированная")}
-                    >
-                        Комбинированная
-                    </Card>
+                    {choiceTypes.map((type) => (
+                        <Card
+                            key={type}
+                            isSelected={firstAnswer === type}
+                            onClick={() => handleFirstChoice(type)}
+                        >
+                            {type}
+                        </Card>
+                    ))}
+                    {firstAnswer === "Неофицальная" && (
+                        <div className="question">
+                            <p className="question-text">Есть ли справка по форме банка?</p>
+                            <div className="grid-container">
+                                {choiceTypes2.map((type) => (
+                                    <Card
+                                        key={type}
+                                        isSelected={thirdAnswer === type}
+                                        onClick={() => setThirdAnswer(type)}
+                                    >
+                                        {type}
+                                    </Card>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                     <NumberInput
                         min={0}
                         max={9999999}

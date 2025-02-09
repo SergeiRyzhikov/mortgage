@@ -6,23 +6,35 @@ import Error from "../components/Error/Error";
 
 const Question12: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
+    const [secondAnswer, setSecondAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    const choiceTypes = ['Учитель', 'Врач', 'IT', 'ИП', 'Государственная компания', 'Прочее']
+    const choiceTypes2 = ['Да', 'Нет']
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
     const handleFirstChoice = (answer: string) => {
         setFirstAnswer(answer);
+        if (answer !== "Нет") {
+            setSecondAnswer(null);
+            return
+        }
     };
 
     const handleContinue = () => {
-        if (firstAnswer) {
-            updateAnswer('12', `${firstAnswer}`)
-            navigate('/13')
+        if ((firstAnswer === "ИП" && !secondAnswer) || (!firstAnswer)) {
+            setErrorMessage('Пожалуйста, заполните все поля.')
+            return;
+        }
+
+        if (secondAnswer) {
+            updateAnswer('12', `${firstAnswer}|${secondAnswer}`)
         }
         else {
-            setErrorMessage('Пожалуйста, заполните все поля.')
+            updateAnswer('12', `${firstAnswer}`)
         }
-        console.log(answers)
+        navigate('/13')
     };
 
     useEffect(() => {
@@ -36,44 +48,33 @@ const Question12: React.FC = () => {
             <div className="question">
                 <p className="question-text">12. Сфера деятельности</p>
                 <div className="grid-container">
-                    <Card
-                        isSelected={firstAnswer === "Учитель"}
-                        onClick={() => handleFirstChoice("Учитель")}
-                    >
-                        Учитель
-                    </Card>
-                    <Card
-                        isSelected={firstAnswer === "Врач"}
-                        onClick={() => handleFirstChoice("Врач")}
-                    >
-                        Врач
-                    </Card>
-                    <Card
-                        isSelected={firstAnswer === "IT"}
-                        onClick={() => handleFirstChoice("IT")}
-                    >
-                        IT
-                    </Card>
-                    <Card
-                        isSelected={firstAnswer === "ИП"}
-                        onClick={() => handleFirstChoice("ИП")}
-                    >
-                        ИП
-                    </Card>
-                    <Card
-                        isSelected={firstAnswer === "Государственная компания"}
-                        onClick={() => handleFirstChoice("Государственная компания")}
-                    >
-                        Государственная компания
-                    </Card>
-                    <Card
-                        isSelected={firstAnswer === "Прочее"}
-                        onClick={() => handleFirstChoice("Прочее")}
-                    >
-                        Прочее
-                    </Card>
+                    {choiceTypes.map((type) => (
+                        <Card
+                            key={type}
+                            isSelected={firstAnswer === type}
+                            onClick={() => handleFirstChoice(type)}
+                        >
+                            {type}
+                        </Card>
+                    ))}
                 </div>
             </div>
+            {firstAnswer === "ИП" && (
+                <div className="question">
+                    <p className="question-text">Есть ли справка по форме банка и 2-НДФЛ?</p>
+                    <div className="grid-container">
+                        {choiceTypes2.map((type) => (
+                            <Card
+                                key={type}
+                                isSelected={secondAnswer === type}
+                                onClick={() => setSecondAnswer(type)}
+                            >
+                                {type}
+                            </Card>
+                        ))}
+                    </div>
+                </div>
+            )}
             <Error message={errorMessage} setMessage={setErrorMessage} />
             <button onClick={handleContinue} className="button">
                 Продолжить

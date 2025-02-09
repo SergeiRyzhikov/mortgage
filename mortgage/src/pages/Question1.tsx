@@ -8,6 +8,7 @@ const Question1: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [secondAnswer, setSecondAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const choiceTypes = ['Да', 'Нет']
 
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
@@ -26,8 +27,7 @@ const Question1: React.FC = () => {
             setErrorMessage('Пожалуйста, заполните все поля.')
             return;
         }
-        console.log("Criminal Record:", firstAnswer);
-        console.log("Economic Article:", secondAnswer);
+
         if (secondAnswer) {
             updateAnswer('1', `${firstAnswer}|${secondAnswer}`)
         }
@@ -35,8 +35,8 @@ const Question1: React.FC = () => {
             updateAnswer('1', `${firstAnswer}`)
         }
         navigate('/2')
-
     };
+
     useEffect(() => {
         console.log(answers)
     }, [])
@@ -48,18 +48,15 @@ const Question1: React.FC = () => {
             <div className="question">
                 <p className="question-text">1. Есть ли у Вас судимость?</p>
                 <div className="grid-container">
-                    <Card
-                        isSelected={firstAnswer === "Да"}
-                        onClick={() => handleFirstChoice("Да")}
-                    >
-                        Да
-                    </Card>
-                    <Card
-                        isSelected={firstAnswer === "Нет"}
-                        onClick={() => handleFirstChoice("Нет")}
-                    >
-                        Нет
-                    </Card>
+                    {choiceTypes.map((type) => (
+                        <Card
+                            key={type}
+                            isSelected={firstAnswer === type}
+                            onClick={() => handleFirstChoice(type)}
+                        >
+                            {type}
+                        </Card>
+                    ))}
                 </div>
             </div>
 
@@ -67,18 +64,15 @@ const Question1: React.FC = () => {
                 <div className="question">
                     <p className="question-text">По экономической статье?</p>
                     <div className="grid-container">
-                        <Card
-                            isSelected={secondAnswer === "Да"}
-                            onClick={() => setSecondAnswer("Да")}
-                        >
-                            Да
-                        </Card>
-                        <Card
-                            isSelected={secondAnswer === "Нет"}
-                            onClick={() => setSecondAnswer("Нет")}
-                        >
-                            Нет
-                        </Card>
+                        {choiceTypes.map((type) => (
+                            <Card
+                                key={type}
+                                isSelected={secondAnswer === type}
+                                onClick={() => setSecondAnswer(type)}
+                            >
+                                {type}
+                            </Card>
+                        ))}
                     </div>
                 </div>
             )}

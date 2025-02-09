@@ -23,6 +23,7 @@ const Result: React.FC = () => {
         "15": "Москва",
         "16": "Квартира/Дом",
         "17": "Высшее",
+        "18": "1",
         "доп1": "Ипотека",
         "доп2": "2",
         "доп3": "[10000,20000]",
@@ -54,6 +55,7 @@ const Result: React.FC = () => {
         const payments = JSON.parse(answers['доп4'])
         const currentPayment = findCurrentPayment()
         const amountOfChildren = Number(answers['8'])
+        const amountOfDependents = Number(answers['18'])
         const birthOfChildren = answers['14']
         const family = answers['7']
         const salary = Number(answers['10'].split('|')[1])
@@ -62,6 +64,7 @@ const Result: React.FC = () => {
             const children = countUnder18(birthOfChildren)
             amountOfPeople += children
         }
+        amountOfPeople += amountOfDependents
         amountOfPeople += family === 'Холост' ? 1 : 2
 
         s += limits.reduce((partialSum: number, a: number) => partialSum + a, 0) / 10
@@ -100,6 +103,7 @@ const Result: React.FC = () => {
 
 
     useEffect(() => {
+        
         console.log(checkFinNagruzka())
     }, [])
     return (
