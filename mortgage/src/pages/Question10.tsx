@@ -10,34 +10,40 @@ const Question9: React.FC = () => {
     const [secondAnswer, setSecondAnswer] = useState<number>(0);
     const [thirdAnswer, setThirdAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    
+
     const choiceTypes = ['Официальная', 'Неофицальная', 'Комбинированная']
-    const choiceTypes2 = ['Да', 'Нет']
+    // const choiceTypes2 = ['Да', 'Нет']
 
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
     const handleFirstChoice = (answer: string) => {
         setFirstAnswer(answer);
-        if (answer !== "Неофицальная") {
-            setThirdAnswer(null);
-            return
-        }
     };
 
-    const handleContinue = () => {
-        if ((!firstAnswer) || (firstAnswer === "Неофицальная" && !thirdAnswer)) {
-            setErrorMessage('Пожалуйста, заполните все поля.')
-            return
-        }
+    // const handleContinue = () => {
+    //     if ((!firstAnswer) || (firstAnswer === "Неофицальная" && !thirdAnswer)) {
+    //         setErrorMessage('Пожалуйста, заполните все поля.')
+    //         return
+    //     }
 
-        if (firstAnswer !== 'Неофицальная') {
+    //     if (firstAnswer !== 'Неофицальная') {
+    //         updateAnswer('10', `${firstAnswer}|${secondAnswer}`);
+    //         navigate('/11')
+    //     }
+    //     else {
+    //         updateAnswer('10', `${firstAnswer}|${secondAnswer}|${thirdAnswer}`);
+    //         navigate('/11')
+    //     }
+    //     console.log(answers)
+    // };
+    const handleContinue = () => {
+        if (firstAnswer) {
             updateAnswer('10', `${firstAnswer}|${secondAnswer}`);
             navigate('/11')
         }
         else {
-            updateAnswer('10', `${firstAnswer}|${secondAnswer}|${thirdAnswer}`);
-            navigate('/11')
+            setErrorMessage('Пожалуйста, заполните все поля.')
         }
         console.log(answers)
     };
@@ -62,7 +68,7 @@ const Question9: React.FC = () => {
                             {type}
                         </Card>
                     ))}
-                    {firstAnswer === "Неофицальная" && (
+                    {/* {firstAnswer === "Неофицальная" && (
                         <div className="question">
                             <p className="question-text">Есть ли справка по форме банка?</p>
                             <div className="grid-container">
@@ -77,7 +83,7 @@ const Question9: React.FC = () => {
                                 ))}
                             </div>
                         </div>
-                    )}
+                    )} */}
                     <NumberInput
                         min={0}
                         max={9999999}

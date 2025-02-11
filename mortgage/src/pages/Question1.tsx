@@ -14,9 +14,9 @@ const Question1: React.FC = () => {
     const { answers, updateAnswer } = useSurvey();
 
     const handleFirstChoice = (answer: string) => {
-        setFirstAnswer(answer);
+        setFirstAnswer(answer)
         if (answer === "Нет") {
-            setSecondAnswer(null);
+            setSecondAnswer(null)
             return
         }
 
