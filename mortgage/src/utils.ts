@@ -21,3 +21,21 @@ export const mortgageTypes = [
     { type: "Семейная", details: "Максимум на 20 лет, 6% годовых, с 21 до 65 лет, 1 ребенок (2019+ года рождения) или 2 ребенка меньше 18 лет", maxTerm: 20, procent: 6 },
     { type: "Нельготная", details: "Максимум на 30 лет, людям с 20 до 65 лет, около 24% годовых", maxTerm: 30, procent: 24 },
 ];
+
+export function getYearsDeclension(years: number): string {
+    if (years % 10 === 1 && years % 100 !== 11) {
+        return `год`;
+    } else if ([2, 3, 4].includes(years % 10) && ![12, 13, 14].includes(years % 100)) {
+        return `года`;
+    } else {
+        return `лет`;
+    }
+}
+
+export function monthsSince(dateString: string): number {
+    const givenDate = new Date(dateString);
+    const currentDate = new Date();
+    const yearsDiff = currentDate.getFullYear() - givenDate.getFullYear();
+    const monthsDiff = currentDate.getMonth() - givenDate.getMonth();
+    return Math.floor(yearsDiff * 12 + monthsDiff);
+}

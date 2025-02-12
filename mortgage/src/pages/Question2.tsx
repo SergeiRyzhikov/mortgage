@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "../components/Card/Card";
 import { useSurvey } from "../SurveyContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
 const banks = [
@@ -30,6 +30,8 @@ const Question2: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const choiceTypes = ['Да', 'Нет']
+    const location = useLocation();
+
 
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
@@ -83,6 +85,11 @@ const Question2: React.FC = () => {
     };
 
     useEffect(() => {
+        const previousStep = location.state?.from;
+        console.log(previousStep)
+        if (previousStep != 1) {
+            navigate('/')
+        }
         console.log(answers)
     }, [])
 

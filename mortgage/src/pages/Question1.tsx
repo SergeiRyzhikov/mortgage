@@ -34,7 +34,7 @@ const Question1: React.FC = () => {
         else {
             updateAnswer('1', `${firstAnswer}`)
         }
-        navigate('/2')
+        navigate('/2', { state: { from: '1' } })
     };
 
     useEffect(() => {

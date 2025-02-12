@@ -4,7 +4,7 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 import NumberInput from "../components/NumberInput/NumberInput";
-import { mortgageTypes } from "../utils";
+import { getYearsDeclension, mortgageTypes } from "../utils";
 
 const MortgageSelection: React.FC = () => {
     const [selectedCreditType, setSelectedCreditType] = useState<string | null>(null);
@@ -57,6 +57,7 @@ const MortgageSelection: React.FC = () => {
 
         const selected = mortgageTypes.find((mortgage) => mortgage.type === selectedMortgage);
         updateAnswer('procent', String(selected?.procent))
+        updateAnswer('maxTerm', String(selected?.maxTerm))
 
         navigate("/14");
     };
@@ -112,7 +113,7 @@ const MortgageSelection: React.FC = () => {
                             min="1"
                             max={getMaxTerm()}
                         />
-                        <span className="slider-value">{term} лет</span>
+                        <span className="slider-value">{term} {getYearsDeclension(term)}</span>
                     </label>
                     <NumberInput
                         min={0}

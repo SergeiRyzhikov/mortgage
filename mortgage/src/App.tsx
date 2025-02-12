@@ -29,13 +29,15 @@ import Question16 from "./pages/Question16";
 import Question17 from "./pages/Question17";
 import Question18 from "./pages/Question18";
 import Result from "./pages/Result";
+import Extra9 from "./pages/Extra9";
+import First from "./pages/First";
 
 const App: React.FC = () => {
   return (
     <SurveyProvider>
       <Router>
         <Routes>
-
+          <Route path="/" element={<First />} />
           <Route path="/1" element={<Question1 />} />
           <Route path="/2" element={<Question2 />} />
           <Route path="/3" element={<Question3 />} />
@@ -63,6 +65,7 @@ const App: React.FC = () => {
           <Route path="/extra6" element={<Extra6 />} />
           <Route path="/extra7" element={<Extra7 />} />
           <Route path="/extra8" element={<Extra8 />} />
+          <Route path="/extra9" element={<Extra9 />} />
           {/* Другие маршруты можно добавлять здесь */}
         </Routes>
       </Router>
