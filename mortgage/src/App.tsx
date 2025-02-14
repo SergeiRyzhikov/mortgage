@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import MortgageSelection from "./pages/MortgageSelection";
 import './App.css'
 import Question1 from "./pages/Question1";
@@ -35,7 +35,6 @@ import First from "./pages/First";
 const App: React.FC = () => {
   return (
     <SurveyProvider>
-      <Router>
         <Routes>
           <Route path="/" element={<First />} />
           <Route path="/1" element={<Question1 />} />
@@ -68,7 +67,6 @@ const App: React.FC = () => {
           <Route path="/extra9" element={<Extra9 />} />
           {/* Другие маршруты можно добавлять здесь */}
         </Routes>
-      </Router>
     </SurveyProvider>
   );
 };

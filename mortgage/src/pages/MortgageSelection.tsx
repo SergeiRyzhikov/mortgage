@@ -13,7 +13,7 @@ const MortgageSelection: React.FC = () => {
     const [amount, setAmount] = useState<number>(1000000);
     const [initialPayment, setInitialPayment] = useState<number>(0);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const { answers, updateAnswer } = useSurvey();
+    const { updateAnswer } = useSurvey();
     const navigate = useNavigate();
 
     const creditTypes = ["Ипотека", "Потребительский кредит", "Автокредит", "Микрозайм"];

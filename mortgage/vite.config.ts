@@ -1,16 +1,13 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 export default defineConfig({
-  base: "/mortgage/", 
-  plugins: [react()],
-  build: {
-    rollupOptions: {
-      output: {
-        assetFileNames: "assets/[name]-[hash][extname]",
-        entryFileNames: "assets/[name]-[hash].js",
-        chunkFileNames: "assets/[name]-[hash].js",
-      },
-    },
-  },
+  plugins: [
+    react()
+  ],
+  // base: '/mortgage',
+  server: {
+    host: '0.0.0.0',
+    port: 5174
+  }
+
 });

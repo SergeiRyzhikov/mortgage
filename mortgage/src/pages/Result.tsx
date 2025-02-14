@@ -5,9 +5,8 @@ import "../styles/Result.css";
 import { countUnder18, getYearsDeclension, monthsSince } from "../utils";
 
 const Result: React.FC = () => {
-    const { answers } = useSurvey();
+    const { answers, clearAnswers } = useSurvey();
     const navigate = useNavigate();
-    // reasons
     const [reasons, setReasons] = useState<string[]>([])
     const [recommendations, setRecommendations] = useState<string[]>([])
     const [isApproved, setIsApproved] = useState<boolean>()
@@ -20,7 +19,7 @@ const Result: React.FC = () => {
     //     "6": "2005-10-10",
     //     "7": "Женат/замужем",
     //     "8": "2",
-    //     "9": "Нет|Да",
+    //     "9": "Да",
     //     "10": "Комбинированная|500000",
     //     "11": "2023-10-10",
     //     "12": "ИП|Да",
@@ -107,11 +106,9 @@ const Result: React.FC = () => {
         }
     }
 
-
-
     const mainTree = () => {
         const [residentRF, residentPermit] = answers['9'].split('|')
-        const [typeSalary, salary] = answers['10'].split('|')
+        const [typeSalary, _] = answers['10'].split('|')
         const [isSalaryBank, bank] = answers['2'].split('|')
         const [typeWork, isIPSparvki] = answers['12'].split('|')
         const [criminalRecord, isEcononmicCriminalRecord] = answers['1'].split('|')
@@ -165,18 +162,13 @@ const Result: React.FC = () => {
 
 
         if (!isFinOk) {
-            console.log('def', deficit)
-            // 100 000
-            // 120 000
+
             isOk = false
             if (currentPayment - deficit < 0) {
 
-                // setReasons(reasons => [...reasons, 'Урежут сумму кредита. Новый платёж сформируется так, чтобы фин. нагрузка была равна ЗП (тут надо будет на основе введённых данных посчитать новый платёж'])
-                // setReasons(reasons => [...reasons, 'Увеличат срок кредита (надо будет посчитать срок с тем же процентом)'])
-                if (typeSalary === 'Официальная') {
-                    setReasons(reasons => [...reasons, `Финансовая нагрузка слишком большая. Вам не хватает ${deficit.toLocaleString('ru-RU')} руб./мес.`])
-                    setRecommendations(recommendations => [...recommendations, `Закрыть действующие кредитные карты и платежи и уменьшить фин. нагрузку на ${deficit.toLocaleString('ru-RU')} руб./мес.`])
-                }
+                setReasons(reasons => [...reasons, `Финансовая нагрузка слишком большая. Вам не хватает ${deficit.toLocaleString('ru-RU')} руб./мес.`])
+                setRecommendations(recommendations => [...recommendations, `Закрыть действующие кредитные карты и платежи и уменьшить фин. нагрузку на ${deficit.toLocaleString('ru-RU')} руб./мес.`])
+
                 if (typeSalary === 'Комбинированная') {
                     setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП).'])
                 }
@@ -192,81 +184,63 @@ const Result: React.FC = () => {
                         newTerm = i
                         break
                     }
-                    console.log(newCurrentPayment)
                 }
                 if (newTerm !== 0) {
                     // только увеличиваем срок кредита
-                    console.log('только увеличиваем срок кредита.')
                     setReasons(reasons => [...reasons, `Увеличат срок кредита. Новый - ${newTerm} ${getYearsDeclension(newTerm)}`])
-                    // if (typeSalary === 'Официальная') {
                     setReasons(reasons => [...reasons, `Финансовая нагрузка слишком большая. Вам не хватает ${deficit.toLocaleString('ru-RU')} руб./мес.`])
                     setRecommendations(recommendations => [...recommendations, `Закрыть действующие кредитные карты и платежи и уменьшить фин. нагрузку на ${deficit.toLocaleString('ru-RU')} руб./мес.`])
-                    // }
-                    // if (typeSalary === 'Комбинированная') {
-                    //     setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП)'])
-                    // }
+
+                    if (typeSalary === 'Комбинированная') {
+                        setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП).'])
+                    }
 
                 }
                 else {
                     newCurrentPayment = currentPayment - deficit
                     const amount = findAmount(newCurrentPayment, maxTerm)
-                    console.log('Увеличиваем срок и уменьшаем сумму кредита', amount)
-                    // ищем меньшую сумму
-                    // amount = (currPayment*(mainProcent-1)/(monthlyProcent*mainProcent))+inital
+
                     setReasons(reasons => [...reasons, `Увеличат срок кредита. ${maxTerm} ${getYearsDeclension(maxTerm)}`])
                     setReasons(reasons => [...reasons, `Урежут сумму кредита. До ${amount.toLocaleString('ru-RU')} руб`])
-                    // if (typeSalary === 'Официальная') {
                     setReasons(reasons => [...reasons, `Финансовая нагрузка слишком большая. Вам не хватает ${deficit.toLocaleString('ru-RU')} руб./мес.`])
                     setRecommendations(recommendations => [...recommendations, `Закрыть действующие кредитные карты и платежи и уменьшить фин. нагрузку на ${deficit.toLocaleString('ru-RU')} руб./мес.`])
-                    // }
-                    // if (typeSalary === 'Комбинированная') {
-                    //     setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП)'])
-                    // }
-                }
-            }
-        }
 
-        else {
-            if (isOk) {
-                if (experience < 3) {
-                    isOk = false
-                    setReasons(reasons => [...reasons, `Стаж на последнем рабочем месте должен быть больше 3 месяцев`])
-                }
-                if (creditScore !== 0) {
-                    if (creditScore < 795) {
-                        isOk = false
-                        setReasons(reasons => [...reasons, `Возможно для одобрения не хватит кредитного рейтинга`])
+                    if (typeSalary === 'Комбинированная') {
+                        setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП).'])
                     }
                 }
-                else {
-                    setReasons(reasons => [...reasons, `Результат может быть неточным из-за отсутствия данных о кредитном рейтинге`])
-                }
-                
             }
-
         }
+
+
+        if (experience < 3) {
+            isOk = false
+            setReasons(reasons => [...reasons, `Стаж на последнем рабочем месте должен быть больше 3 месяцев.`])
+        }
+        if (creditScore !== 0) {
+            if (creditScore < 795) {
+                isOk = false
+                setReasons(reasons => [...reasons, `Возможно для одобрения не хватит кредитного рейтинга.`])
+            }
+        }
+        else {
+            setReasons(reasons => [...reasons, `Результат может быть неточным из-за отсутствия данных о кредитном рейтинге.`])
+        }
+
         setIsApproved(isOk)
-        console.log(isApproved)
 
     }
-    // В "Итог": 1. Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП)
-    // }В "Итог": 3. Вам не хватает n руб./мес. В "Рекомендации": 1. Закрыть действующие кредитные карты и платежи и уменьшить фин. нагрузку на n руб./мес.
-    // Если фин. нагрузка не соответствует. Формируем "Итог": 1. Урежут сумму кредита. Новый платёж сформируется так, чтобы фин. нагрузка была равна ЗП (тут надо будет на основе введённых данных посчитать новый платёж) 2. Увеличат срок кредита (надо будет посчитать срок с тем же процентом)
-    // const isApproved = true;
-    // const reasons = isApproved
-    //     ? ["Стабильный доход", "Хорошая кредитная история"]
-    //     : ["Низкий уровень дохода", "Высокий уровень долговой нагрузки"];
-
-    // const recommendations = isApproved
-    //     ? ["Подготовьте документы для подписания"]
-    //     : ["Увеличьте официальный доход", "Погасите часть существующих кредитов"];
-
 
     useEffect(() => {
         console.log(answers)
-        // console.log(checkFinNagruzka())
         mainTree()
     }, [])
+
+    const handlerEnd = () => {
+        clearAnswers()
+        navigate("/")
+    }
+
     return (
         <div className="container">
             <h1 className={`approval-title ${isApproved ? "approved" : "declined"}`}>
@@ -291,7 +265,7 @@ const Result: React.FC = () => {
                 </ul>
             </div>
 
-            <button onClick={() => navigate("/")} className="button">
+            <button onClick={handlerEnd} className="button">
                 Завершить
             </button>
         </div>

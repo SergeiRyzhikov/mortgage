@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import "../styles/UploadCreditHistory.css";
 import { useNavigate } from "react-router-dom";
 import { useSurvey } from "../SurveyContext";
-import Card from "../components/Card/Card";
+
 
 const UploadCreditHistory: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
     const navigate = useNavigate();
-    const { answers, updateAnswer } = useSurvey();
+    const { updateAnswer } = useSurvey();
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {

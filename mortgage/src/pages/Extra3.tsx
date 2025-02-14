@@ -54,7 +54,7 @@ const Extra3: React.FC = () => {
                                 max={99999999}
                                 label={``}
                                 value={limit}
-                                setValue={(value) => handleLimitChange(index, value)}
+                                setValue={(value) => handleLimitChange(index, value as number)}
                             />
                             {limits.length > 1 && (
                                 <button

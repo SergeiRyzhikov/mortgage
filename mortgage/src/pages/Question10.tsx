@@ -8,7 +8,7 @@ import NumberInput from "../components/NumberInput/NumberInput";
 const Question9: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [secondAnswer, setSecondAnswer] = useState<number>(0);
-    const [thirdAnswer, setThirdAnswer] = useState<string | null>(null);
+    // const [thirdAnswer, setThirdAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const choiceTypes = ['Официальная', 'Неофицальная', 'Комбинированная']
