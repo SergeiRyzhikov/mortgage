@@ -5,29 +5,34 @@ import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
 const Extra1: React.FC = () => {
-    const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const navigate = useNavigate();
-    const { answers, updateAnswer } = useSurvey();
+    const [selectedAnswers, setSelectedAnswers] = useState<string[]>([])
+    const [errorMessage, setErrorMessage] = useState<string | null>(null)
+    const navigate = useNavigate()
+    const { answers, updateAnswer } = useSurvey()
 
-    const handleFirstChoice = (answer: string) => {
-        setFirstAnswer(answer);
+    const handleChoice = (answer: string) => {
+        setSelectedAnswers(prevAnswers => {
+            if (prevAnswers.includes(answer)) {
+                return prevAnswers.filter(a => a !== answer);
+            } else {
+                return [...prevAnswers, answer];
+            }
+        });
     };
 
     const handleContinue = () => {
-        if (firstAnswer) {
-            updateAnswer('доп1', `${firstAnswer}`)
-            navigate('/extra2')
+        if (selectedAnswers.length > 0) {
+            updateAnswer('доп1', JSON.stringify(selectedAnswers))
+            navigate('/extra2');
+        } else {
+            setErrorMessage('Пожалуйста, выберите хотя бы один вариант.');
         }
-        else {
-            setErrorMessage('Пожалуйста, заполните все поля.')
-        }
-        console.log(answers)
+        console.log(answers);
     };
 
     useEffect(() => {
-        console.log(answers)
-    }, [])
+        console.log(answers);
+    }, [answers]);
 
     return (
         <div className="container">
@@ -35,28 +40,28 @@ const Extra1: React.FC = () => {
 
             <div className="question">
                 <p className="question-text">4.1. Что брали из действующих кредитов?</p>
-                <div className="grid-container" style={{'gridTemplateColumns': 'repeat(2, 1fr)'}}>
+                <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(2, 1fr)' }}>
                     <Card
-                        isSelected={firstAnswer === "Потребительский кредит"}
-                        onClick={() => handleFirstChoice("Потребительский кредит")}
+                        isSelected={selectedAnswers.includes("Потребительский кредит")}
+                        onClick={() => handleChoice("Потребительский кредит")}
                     >
                         Потребительский кредит
                     </Card>
                     <Card
-                        isSelected={firstAnswer === "Ипотека"}
-                        onClick={() => handleFirstChoice("Ипотека")}
+                        isSelected={selectedAnswers.includes("Ипотека")}
+                        onClick={() => handleChoice("Ипотека")}
                     >
                         Ипотека
                     </Card>
                     <Card
-                        isSelected={firstAnswer === "Кредитная карта"}
-                        onClick={() => handleFirstChoice("Кредитная карта")}
+                        isSelected={selectedAnswers.includes("Кредитная карта")}
+                        onClick={() => handleChoice("Кредитная карта")}
                     >
                         Кредитная карта
                     </Card>
                     <Card
-                        isSelected={firstAnswer === "Ничего"}
-                        onClick={() => handleFirstChoice("Ничего")}
+                        isSelected={selectedAnswers.includes("Ничего")}
+                        onClick={() => handleChoice("Ничего")}
                     >
                         Ничего
                     </Card>

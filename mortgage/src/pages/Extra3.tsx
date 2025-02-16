@@ -5,14 +5,14 @@ import NumberInput from "../components/NumberInput/NumberInput";
 import "../styles/Extra3.css";
 
 const Extra3: React.FC = () => {
-    const [limits, setLimits] = useState<number[]>([0]); // Начальный один инпут
+    const [limits, setLimits] = useState<number[]>([]);
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
-    // Добавить новый инпут
-    const handleAddInput = () => {
-        setLimits([...limits, 0]);
-    };
+    useEffect(() => {
+        const cardCount = Number(answers['доп2']) || 1;
+        setLimits(new Array(cardCount).fill(0));
+    }, [answers]);
 
     // Обновить значение конкретного инпута
     const handleLimitChange = (index: number, value: number) => {
@@ -23,28 +23,17 @@ const Extra3: React.FC = () => {
         });
     };
 
-    // Удаление инпута (если больше 1)
-    const handleRemoveInput = (index: number) => {
-        if (limits.length > 1) {
-            setLimits((prev) => prev.filter((_, i) => i !== index));
-        }
-    };
-
     const handleContinue = () => {
-        updateAnswer("доп3", JSON.stringify(limits)); // Сохраняем список лимитов
-        navigate("/extra4");
+        updateAnswer("доп3", JSON.stringify(limits));
+        navigate("/extra3_1");
         console.log(answers);
     };
-
-    useEffect(() => {
-        console.log(answers);
-    }, []);
 
     return (
         <div className="container">
             <h1 className="title">Анкета</h1>
 
-            <div className="question" style={{'width':'auto'}}>
+            <div className="question" style={{ width: 'auto' }}>
                 <p className="question-text">4.3. Какие лимиты по картам?</p>
                 <div className="input-list">
                     {limits.map((limit, index) => (
@@ -52,24 +41,13 @@ const Extra3: React.FC = () => {
                             <NumberInput
                                 min={0}
                                 max={99999999}
-                                label={``}
+                                label={''}
                                 value={limit}
                                 setValue={(value) => handleLimitChange(index, value as number)}
                             />
-                            {limits.length > 1 && (
-                                <button
-                                    className="remove-button"
-                                    onClick={() => handleRemoveInput(index)}
-                                >
-                                    ✖
-                                </button>
-                            )}
                         </div>
                     ))}
                 </div>
-                <button className="add-button" onClick={handleAddInput}>
-                    + Добавить карту
-                </button>
             </div>
 
             <button onClick={handleContinue} className="button">

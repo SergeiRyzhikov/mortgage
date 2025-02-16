@@ -31,6 +31,7 @@ import Question18 from "./pages/Question18";
 import Result from "./pages/Result";
 import Extra9 from "./pages/Extra9";
 import First from "./pages/First";
+import Extra3_1 from "./pages/Extra3_1";
 
 const App: React.FC = () => {
   return (
@@ -59,6 +60,7 @@ const App: React.FC = () => {
           <Route path="/extra1" element={<Extra1 />} />
           <Route path="/extra2" element={<Extra2 />} />
           <Route path="/extra3" element={<Extra3 />} />
+          <Route path="/extra3_1" element={<Extra3_1 />} />
           <Route path="/extra4" element={<Extra4 />} />
           <Route path="/extra5" element={<Extra5 />} />
           <Route path="/extra6" element={<Extra6 />} />

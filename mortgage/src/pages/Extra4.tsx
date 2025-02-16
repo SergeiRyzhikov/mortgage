@@ -5,13 +5,14 @@ import NumberInput from "../components/NumberInput/NumberInput";
 import "../styles/Extra3.css";
 
 const Extra4: React.FC = () => {
-    const [limits, setLimits] = useState<number[]>([0]); 
+    const [limits, setLimits] = useState<number[]>([]);
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
-    const handleAddInput = () => {
-        setLimits([...limits, 0]);
-    };
+    useEffect(() => {
+        const cardCount = Number(answers['доп31']) || 1;
+        setLimits(new Array(cardCount).fill(0));
+    }, [answers]);
 
     const handleLimitChange = (index: number, value: number) => {
         setLimits((prev) => {
@@ -21,52 +22,31 @@ const Extra4: React.FC = () => {
         });
     };
 
-    const handleRemoveInput = (index: number) => {
-        if (limits.length > 1) {
-            setLimits((prev) => prev.filter((_, i) => i !== index));
-        }
-    };
-
     const handleContinue = () => {
         updateAnswer("доп4", JSON.stringify(limits));
         navigate("/extra5");
         console.log(answers);
     };
 
-    useEffect(() => {
-        console.log(answers);
-    }, []);
-
     return (
         <div className="container">
             <h1 className="title">Анкета</h1>
 
-            <div className="question" style={{'width':'auto'}}>
-                <p className="question-text">4.4. Какие платежи по кредитам (в месяц) ?</p>
+            <div className="question" style={{ width: 'auto' }}>
+                <p className="question-text">4.4. Какие платежи по кредитам?</p>
                 <div className="input-list">
                     {limits.map((limit, index) => (
                         <div key={index} className="input-wrapper">
                             <NumberInput
                                 min={0}
                                 max={99999999}
-                                label={``}
+                                label={''}
                                 value={limit}
                                 setValue={(value) => handleLimitChange(index, value as number)}
                             />
-                            {limits.length > 1 && (
-                                <button
-                                    className="remove-button"
-                                    onClick={() => handleRemoveInput(index)}
-                                >
-                                    ✖
-                                </button>
-                            )}
                         </div>
                     ))}
                 </div>
-                <button className="add-button" onClick={handleAddInput}>
-                    + Добавить кредит
-                </button>
             </div>
 
             <button onClick={handleContinue} className="button">
@@ -77,6 +57,3 @@ const Extra4: React.FC = () => {
 };
 
 export default Extra4;
-
-
-

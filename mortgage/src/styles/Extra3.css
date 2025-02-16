@@ -41,49 +41,11 @@
 .input-wrapper {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
-    gap:10px;
+    gap: 10px;
     max-width: 400px;
     position: relative;
-}
-
-/* Кнопка удаления справа от инпута */
-.remove-button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.remove-button:hover {
-    background-color: #c82333;
-}
-
-/* Кнопка добавления инпута */
-.add-button {
-    /* width: 100%; */
-    max-width: 400px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 12px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-}
-
-.add-button:hover {
-    background-color: #0056b3;
 }
 
 /* Кнопка продолжить */
@@ -120,15 +82,6 @@
 
     .input-wrapper {
         max-width: 90%;
-    }
-
-    .remove-button {
-        padding: 6px 10px;
-    }
-
-    .add-button {
-        font-size: 0.9rem;
-        padding: 10px;
     }
 
     .button {
