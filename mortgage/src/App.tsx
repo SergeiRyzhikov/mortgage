@@ -32,6 +32,8 @@ import Result from "./pages/Result";
 import Extra9 from "./pages/Extra9";
 import First from "./pages/First";
 import Extra3_1 from "./pages/Extra3_1";
+import QuestionSalaryConf from "./pages/QuestionSalaryConf";
+import QuestionPercent from "./pages/QuestionPercent";
 
 const App: React.FC = () => {
   return (
@@ -67,6 +69,8 @@ const App: React.FC = () => {
           <Route path="/extra7" element={<Extra7 />} />
           <Route path="/extra8" element={<Extra8 />} />
           <Route path="/extra9" element={<Extra9 />} />
+          <Route path="/salaryConf" element={<QuestionSalaryConf />} />
+          <Route path="/percent" element={<QuestionPercent />} />
           {/* Другие маршруты можно добавлять здесь */}
         </Routes>
     </SurveyProvider>

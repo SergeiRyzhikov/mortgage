@@ -30,12 +30,15 @@ const MortgageSelection: React.FC = () => {
     };
 
     const handleContinue = () => {
-        if (!selectedCreditType || (selectedCreditType === "Ипотека" && !selectedMortgage) || !term || !amount || !initialPayment) {
+        if (!selectedCreditType || (selectedCreditType === "Ипотека" && !selectedMortgage) || !term || !amount ) {
             setErrorMessage("Пожалуйста, заполните все поля.");
             return;
         }
-
-        if (initialPayment < amount * 0.15) {
+        if (selectedCreditType === "Ипотека" && !initialPayment){
+            setErrorMessage("Пожалуйста, заполните все поля.");
+            return;
+        }
+        if (selectedCreditType === "Ипотека" && initialPayment < amount * 0.15) {
             setErrorMessage("Первоначальный взнос должен быть не менее 15% от суммы кредита.");
             return;
         }
@@ -58,7 +61,11 @@ const MortgageSelection: React.FC = () => {
         const selected = mortgageTypes.find((mortgage) => mortgage.type === selectedMortgage);
         updateAnswer('procent', String(selected?.procent))
         updateAnswer('maxTerm', String(selected?.maxTerm))
-
+        console.log(selectedCreditType)
+        if (selectedCreditType !== "Ипотека") {
+            navigate("/salaryConf");
+            return
+        }
         navigate("/14");
     };
 
@@ -122,13 +129,15 @@ const MortgageSelection: React.FC = () => {
                         value={amount}
                         setValue={setAmount}
                     />
-                    <NumberInput
-                        min={0}
-                        max={amount}
-                        label={"Первоначальный взнос (не менее 15%):"}
-                        value={initialPayment}
-                        setValue={setInitialPayment}
-                    />
+                    {selectedCreditType === 'Ипотека' &&
+                        <NumberInput
+                            min={0}
+                            max={amount}
+                            label={"Первоначальный взнос (не менее 15%):"}
+                            value={initialPayment}
+                            setValue={setInitialPayment}
+                        />
+                    }
                 </div>
             }
             <Error message={errorMessage} setMessage={setErrorMessage} />

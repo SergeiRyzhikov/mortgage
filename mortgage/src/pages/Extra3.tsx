@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import NumberInput from "../components/NumberInput/NumberInput";
-import "../styles/Extra3.css";
+// import "../styles/Extra3.css";
 
 const Extra3: React.FC = () => {
     const [limits, setLimits] = useState<number[]>([]);

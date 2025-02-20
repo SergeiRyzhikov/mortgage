@@ -5,46 +5,51 @@ import "../styles/Result.css";
 import { countUnder18, getYearsDeclension, monthsSince } from "../utils";
 
 const Result: React.FC = () => {
-    // const { answers, clearAnswers } = useSurvey();
+    const { answers, clearAnswers } = useSurvey();
     const navigate = useNavigate();
     const [reasons, setReasons] = useState<string[]>([])
     const [recommendations, setRecommendations] = useState<string[]>([])
     const [isApproved, setIsApproved] = useState<boolean>()
-    const answers = {
-        "1": "Да|Нет",
-        "2": "Да|Тинькофф Банк",
-        "3": "Нет",
-        "4": "",
-        "5": "57",
-        "6": "2005-10-10",
-        "7": "Женат/замужем",
-        "8": "2",
-        "9": "Да",
-        "10": "Комбинированная|500000",
-        "11": "2023-10-10",
-        "12": "ИП|Да",
-        "14": "2022-02-01,2021-05-03",
-        "15": "Москва",
-        "16": "Квартира/Дом",
-        "17": "Высшее",
-        "18": "",
-        "доп1": "Потребительский кредит",
-        "доп2": "0",
-        "доп3": "[0]",
-        "доп4": "[100,90000]",
-        "доп5": "Да",
-        "доп6": "Нет",
-        "доп7": "Нет",
-        "доп8": "+",
-        "доп9": "800",
-        "credit_type": "Ипотека",
-        "mortgage_type": "Семейная",
-        "term": "15",
-        "amount": "100000000",
-        "initial_payment": "2000000",
-        "procent": "6",
-        "maxTerm": "20"
-    }
+    // const answers = {
+    //     "1": "Да|Нет",
+    //     "2": "Да|Тинькофф Банк",
+    //     "3": "Нет",
+    //     "4": "",
+    //     "5": "57",
+    //     "6": "2005-10-10",
+    //     "7": "Женат/замужем",
+    //     "8": "2",
+    //     "9": "Да",
+    //     "10": "Комбинированная|500000",
+    //     "11": "2023-10-10",
+    //     "12": "ИП|Да",
+    //     "14": "2022-02-01,2021-05-03",
+    //     "15": "Москва",
+    //     "16": "Квартира/Дом",
+    //     "17": "Высшее",
+    //     "18": "",
+    //     "доп1": "Потребительский кредит",
+    //     "доп2": "0",
+    //     "доп3": "[0]",
+    //     "доп4": "[100,90000]",
+    //     "доп5": "Да",
+    //     "доп6": "Нет",
+    //     "доп7": "Нет",
+    //     "доп8": "+",
+    //     "доп9": "800",
+    //     // "credit_type": "Ипотека",
+    //     // "mortgage_type": "Семейная",
+    //     // "term": "15",
+    //     // "amount": "100000000",
+    //     // "initial_payment": "2000000",
+    //     // "procent": "6",
+    //     "maxTerm": "20",
+    //     "credit_type": "Потребительский кредит",
+    //     "term": "15",
+    //     "amount": "10000000",
+    //     "procent": "6",
+    //     'salaryConf': 'Да'
+    // }
 
     const findCurrentPayment = (term: number): number => {
         const monthlyProcent = Number(answers['procent']) / 1200
@@ -114,11 +119,19 @@ const Result: React.FC = () => {
         const [criminalRecord, isEcononmicCriminalRecord] = answers['1'].split('|')
         const expirations = answers['доп6']
         const term = Number(answers['term'])
-        const maxTerm = Number(answers['maxTerm'])
+
         const FSSP = answers['3']
         const experience = monthsSince(answers['11'])
         const creditScore = Number(answers['доп9'])
+        const creditType = answers['credit_type']
         let isOk = true;
+
+        // if (creditType === 'Ипотека'){
+            const maxTerm = Number(answers['maxTerm'])
+        // }
+        if (creditType === 'Потребительский кредит') {
+            const salaryConf = Number(answers['salaryConf'])
+        }
         if (residentRF === 'Нет') {
             if (residentPermit === 'Нет' || typeSalary !== 'Официальная') {
                 setReasons(reasons => [...reasons, 'Отсуствие вида на жительства и регистрации.'])
@@ -237,7 +250,7 @@ const Result: React.FC = () => {
     }, [])
 
     const handlerEnd = () => {
-        // clearAnswers()
+        clearAnswers()
         navigate("/")
     }
 

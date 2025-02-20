@@ -1,4 +1,4 @@
-.container {
+/* .container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,27 +6,16 @@
     min-height: 100vh;
     padding: 20px;
     background-color: #f7f7f7;
-}
+} */
 
-.title {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-}
 
-.question {
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
-}
 
-.question-text {
+/* .question-text {
     font-size: 1.2rem;
     font-weight: 500;
     margin-bottom: 10px;
     color: #333;
-}
+} */
 
 /* Контейнер для инпута */
 .input-container {
@@ -36,9 +25,10 @@
     margin: 0 auto;
 }
 
-/* Инпут */
-.region-input {
-    width: 100%;
+
+/* .region-input {
+    width: calc(100% - 1rem);
+    max-width: 100%;
     padding: 12px;
     font-size: 1rem;
     border: 2px solid #ccc;
@@ -49,6 +39,30 @@
 
 .region-input:focus {
     border-color: #007bff;
+} */
+.region-input {
+    /* width: calc(100% - 1rem); */
+    /* Убираем небольшой отступ */
+    /* Гарантируем, что не выйдет за границы */
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    /* Учитываем padding в размерах элемента */
+}
+
+.region-input::-webkit-outer-spin-button,
+.region-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+.region-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 /* Список подсказок */
@@ -79,7 +93,7 @@
 }
 
 /* Кнопка "Продолжить" */
-.button {
+/* .button {
     margin-top: 20px;
     padding: 12px 20px;
     font-size: 1rem;
@@ -94,48 +108,4 @@
 
 .button:hover {
     background-color: #0056b3;
-}
-
-/* 🔹 АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-
-    .title {
-        font-size: 1.8rem;
-    }
-
-    .question {
-        max-width: 100%;
-    }
-
-    .question-text {
-        font-size: 1rem;
-    }
-
-    .input-container {
-        max-width: 90%;
-    }
-
-    .region-input {
-        font-size: 1rem;
-        padding: 10px;
-    }
-
-    .suggestions-list {
-        max-height: 200px;
-    }
-
-    .suggestions-list li {
-        font-size: 0.9rem;
-        padding: 10px;
-    }
-
-    .button {
-        width: 60%;
-        max-width: 300px;
-        font-size: 1rem;
-        padding: 10px;
-    }
-}
+} */

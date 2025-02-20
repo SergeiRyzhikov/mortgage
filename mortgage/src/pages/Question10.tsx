@@ -57,8 +57,8 @@ const Question9: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">10. Укажите свою заработную плату в рублях (тип и сумму)</p>
-                <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(1, 1fr)' }}>
+                <p className="question-text">10. Укажите тип своей заработной платы</p>
+                <div className="grid-container" >
                     {choiceTypes.map((type) => (
                         <Card
                             key={type}
@@ -84,14 +84,18 @@ const Question9: React.FC = () => {
                             </div>
                         </div>
                     )} */}
-                    <NumberInput
-                        min={0}
-                        max={9999999}
-                        label={''}
-                        value={secondAnswer}
-                        setValue={setSecondAnswer}
-                    />
+
                 </div>
+            </div>
+            <p className="question-text">Укажите размер заработной платы в рублях в месяц </p>
+            <div className="question">
+                <NumberInput
+                    min={0}
+                    max={9999999}
+                    label={''}
+                    value={secondAnswer}
+                    setValue={setSecondAnswer}
+                />
             </div>
             <Error message={errorMessage} setMessage={setErrorMessage} />
             <button onClick={handleContinue} className="button">

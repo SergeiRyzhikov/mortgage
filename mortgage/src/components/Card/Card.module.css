@@ -1,6 +1,9 @@
 /* Card.module.css */
 
 .card {
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
     padding: 1rem;
     border: 2px solid #ccc;
     border-radius: 0.5rem;
@@ -8,6 +11,7 @@
     cursor: pointer;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
 
 .card:hover {
     border-color: #007bff;

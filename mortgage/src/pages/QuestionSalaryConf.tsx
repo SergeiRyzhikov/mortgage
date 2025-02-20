@@ -4,22 +4,21 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
-const Question16: React.FC = () => {
+const QuestionSalaryConf: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
+    const choiceTypes = ['Да', 'Нет']
 
-    const choiceTypes = ['Автомобиль', 'Квартира/Дом', 'Земельный участок']
-    
     const handleFirstChoice = (answer: string) => {
         setFirstAnswer(answer);
     };
 
     const handleContinue = () => {
         if (firstAnswer) {
-            updateAnswer('16', `${firstAnswer}`)
-            navigate('/17')
+            updateAnswer('salaryConf', `${firstAnswer}`)
+            navigate('/percent')
         }
         else {
             setErrorMessage('Пожалуйста, заполните все поля.')
@@ -36,8 +35,8 @@ const Question16: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">16. Наличие</p>
-                <div className="grid-container" style={{ 'gridTemplateColumns': 'minmax(200px, max-content)' }}>
+                <p className="question-text">13.1 Есть ли подтверждение дохода?</p>
+                <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <Card
                             key={type}
@@ -57,4 +56,6 @@ const Question16: React.FC = () => {
     );
 };
 
-export default Question16;
+export default QuestionSalaryConf;
+
+

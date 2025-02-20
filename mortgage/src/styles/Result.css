@@ -51,27 +51,8 @@ ul li {
     margin-bottom: 5px;
 }
 
-.button {
-    padding: 12px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.button:hover {
-    background-color: #0056b3;
-}
-
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
 
     .approval-title {
         font-size: 1.8rem;
@@ -86,8 +67,8 @@ ul li {
         font-size: 0.9rem;
     }
 
-    .button {
+    /* .button {
         width: 60%;
         max-width: 300px;
-    }
+    } */
 }
