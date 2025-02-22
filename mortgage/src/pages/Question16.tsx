@@ -5,31 +5,36 @@ import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
 const Question16: React.FC = () => {
-    const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
+    const [selectedAnswers, setSelectedAnswers] = useState<string[]>([])
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
-    const choiceTypes = ['Автомобиль', 'Квартира/Дом', 'Земельный участок']
-    
-    const handleFirstChoice = (answer: string) => {
-        setFirstAnswer(answer);
+    const choiceTypes = ['Автомобиль', 'Квартира/Дом', 'Земельный участок', 'Ничего']
+
+    const handleChoice = (answer: string) => {
+        setSelectedAnswers(prevAnswers => {
+            if (prevAnswers.includes(answer)) {
+                return prevAnswers.filter(a => a !== answer);
+            } else {
+                return [...prevAnswers, answer];
+            }
+        });
     };
 
     const handleContinue = () => {
-        if (firstAnswer) {
-            updateAnswer('16', `${firstAnswer}`)
-            navigate('/17')
+        if (selectedAnswers.length > 0) {
+            updateAnswer('16', JSON.stringify(selectedAnswers))
+            navigate('/17');
+        } else {
+            setErrorMessage('Пожалуйста, выберите хотя бы один вариант.');
         }
-        else {
-            setErrorMessage('Пожалуйста, заполните все поля.')
-        }
-        console.log(answers)
+        console.log(answers);
     };
 
     useEffect(() => {
-        console.log(answers)
-    }, [])
+        console.log(answers);
+    }, [answers]);
 
     return (
         <div className="container">
@@ -37,12 +42,12 @@ const Question16: React.FC = () => {
 
             <div className="question">
                 <p className="question-text">16. Наличие</p>
-                <div className="grid-container" style={{ 'gridTemplateColumns': 'minmax(200px, max-content)' }}>
+                <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <Card
                             key={type}
-                            isSelected={firstAnswer === type}
-                            onClick={() => handleFirstChoice(type)}
+                            isSelected={selectedAnswers.includes(type)}
+                            onClick={() => handleChoice(type)}
                         >
                             {type}
                         </Card>

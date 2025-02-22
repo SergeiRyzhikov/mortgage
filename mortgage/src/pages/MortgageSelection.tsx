@@ -16,7 +16,7 @@ const MortgageSelection: React.FC = () => {
     const { updateAnswer } = useSurvey();
     const navigate = useNavigate();
 
-    const creditTypes = ["Ипотека", "Потребительский кредит", "Автокредит", "Микрозайм"];
+    const creditTypes = ["Ипотека", "Потребительский кредит", "Авто-кредит", "Микрозайм"];
 
     const handleSelectCreditType = (type: string) => {
         setSelectedCreditType(type);

@@ -40,7 +40,7 @@ const Extra1: React.FC = () => {
 
             <div className="question">
                 <p className="question-text">4.1. Что брали из действующих кредитов?</p>
-                <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(2, 1fr)' }}>
+                <div className="grid-container">
                     <Card
                         isSelected={selectedAnswers.includes("Потребительский кредит")}
                         onClick={() => handleChoice("Потребительский кредит")}

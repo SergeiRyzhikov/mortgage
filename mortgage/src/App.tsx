@@ -34,45 +34,46 @@ import First from "./pages/First";
 import Extra3_1 from "./pages/Extra3_1";
 import QuestionSalaryConf from "./pages/QuestionSalaryConf";
 import QuestionPercent from "./pages/QuestionPercent";
+// import QuestionCard from "./components/QuestionCard";
 
 const App: React.FC = () => {
   return (
     <SurveyProvider>
-        <Routes>
-          <Route path="/" element={<First />} />
-          <Route path="/1" element={<Question1 />} />
-          <Route path="/2" element={<Question2 />} />
-          <Route path="/3" element={<Question3 />} />
-          <Route path="/4" element={<UploadCreditHistory />} />
-          <Route path="/5" element={<Question5 />} />
-          <Route path="/6" element={<Question6 />} />
-          <Route path="/7" element={<Question7 />} />
-          <Route path="/8" element={<Question8 />} />
-          <Route path="/9" element={<Question9 />} />
-          <Route path="/10" element={<Question10 />} />
-          <Route path="/11" element={<Question11 />} />
-          <Route path="/12" element={<Question12 />} />
-          <Route path="/13" element={<MortgageSelection />} />
-          <Route path="/14" element={<Question14 />} />
-          <Route path="/15" element={<Question15 />} />
-          <Route path="/16" element={<Question16 />} />
-          <Route path="/17" element={<Question17 />} />
-          <Route path="/18" element={<Question18 />} />
-          <Route path="/result" element={<Result />} />
-          <Route path="/extra1" element={<Extra1 />} />
-          <Route path="/extra2" element={<Extra2 />} />
-          <Route path="/extra3" element={<Extra3 />} />
-          <Route path="/extra3_1" element={<Extra3_1 />} />
-          <Route path="/extra4" element={<Extra4 />} />
-          <Route path="/extra5" element={<Extra5 />} />
-          <Route path="/extra6" element={<Extra6 />} />
-          <Route path="/extra7" element={<Extra7 />} />
-          <Route path="/extra8" element={<Extra8 />} />
-          <Route path="/extra9" element={<Extra9 />} />
-          <Route path="/salaryConf" element={<QuestionSalaryConf />} />
-          <Route path="/percent" element={<QuestionPercent />} />
-          {/* Другие маршруты можно добавлять здесь */}
-        </Routes>
+      <Routes>
+        <Route path="/" element={<First />} />
+        <Route path="/1" element={<Question1 />} />
+        <Route path="/2" element={<Question2 />} />
+        <Route path="/3" element={<Question3 />} />
+        <Route path="/4" element={<UploadCreditHistory />} />
+        <Route path="/5" element={<Question5 />} />
+        <Route path="/6" element={<Question6 />} />
+        <Route path="/7" element={<Question7 />} />
+        <Route path="/8" element={<Question8 />} />
+        <Route path="/9" element={<Question9 />} />
+        <Route path="/10" element={<Question10 />} />
+        <Route path="/11" element={<Question11 />} />
+        <Route path="/12" element={<Question12 />} />
+        <Route path="/13" element={<MortgageSelection />} />
+        <Route path="/14" element={<Question14 />} />
+        <Route path="/15" element={<Question15 />} />
+        <Route path="/16" element={<Question16 />} />
+        <Route path="/17" element={<Question17 />} />
+        <Route path="/18" element={<Question18 />} />
+        <Route path="/result" element={<Result />} />
+        <Route path="/extra1" element={<Extra1 />} />
+        <Route path="/extra2" element={<Extra2 />} />
+        <Route path="/extra3" element={<Extra3 />} />
+        <Route path="/extra3_1" element={<Extra3_1 />} />
+        <Route path="/extra4" element={<Extra4 />} />
+        <Route path="/extra5" element={<Extra5 />} />
+        <Route path="/extra6" element={<Extra6 />} />
+        <Route path="/extra7" element={<Extra7 />} />
+        <Route path="/extra8" element={<Extra8 />} />
+        <Route path="/extra9" element={<Extra9 />} />
+        <Route path="/salaryConf" element={<QuestionSalaryConf />} />
+        <Route path="/percent" element={<QuestionPercent />} />
+        {/* Другие маршруты можно добавлять здесь */}
+      </Routes>
     </SurveyProvider>
   );
 };
