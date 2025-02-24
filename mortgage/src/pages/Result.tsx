@@ -35,8 +35,8 @@ const Result: React.FC = () => {
         "доп5": "Да",
         "доп6": "Нет",
         "доп7": "Нет",
-        "доп8": "+",
-        "доп9": "800",
+        "доп8": "-",
+        "доп9": "500",
         // "credit_type": "Ипотека",
         // "mortgage_type": "Семейная",
         // "term": "15",
@@ -44,7 +44,7 @@ const Result: React.FC = () => {
         // "initial_payment": "2000000",
         // "procent": "6",
         // "maxTerm": "20",
-        "credit_type": "Авто-кредит",
+        "credit_type": "Микрозайм",
         "term": "5",
         "amount": "2000000",
         "procent": "20",
@@ -112,12 +112,30 @@ const Result: React.FC = () => {
     }
 
     const mainTree = () => {
+        const creditScore = Number(answers['доп9'])
+        const expirations = answers['доп8']
+        const creditType = answers['credit_type']
+        let isOk = true
+
+        if (creditType === 'Микрозайм') {
+            if (expirations === '-') {
+                isOk = false
+                setRecommendations(recommendations => [...recommendations, 'С момента последней просрочки должно пройти 3 платежа.'])
+            }
+            if (creditScore < 500) {
+                isOk = false
+                setRecommendations(recommendations => [...recommendations, 'Поднять кредитный рейтинг.'])
+            }
+            setIsApproved(isOk)
+            return
+
+        }
+        // В "Итог": 1. Микрозайм не дадут   В "Рекомендации": 1.(если ответил, что есть активные просрочки) 2. (если ответил, что он ниже 500)
         const [residentRF, residentPermit] = answers['9'].split('|')
         let [typeSalary, salaryString] = answers['10'].split('|')
         const [isSalaryBank, bank] = answers['2'].split('|')
         const [typeWork, isIPSparvki] = answers['12'].split('|')
         const [criminalRecord, isEcononmicCriminalRecord] = answers['1'].split('|')
-        const expirations = answers['доп6']
         const limits = JSON.parse(answers['доп3'])
         const payments = JSON.parse(answers['доп4'])
         const amountOfChildren = Number(answers['8'])
@@ -130,10 +148,8 @@ const Result: React.FC = () => {
         let amount = Number(answers['amount'])
         const FSSP = answers['3']
         const experience = monthsSince(answers['11'])
-        const creditScore = Number(answers['доп9'])
-        const creditType = answers['credit_type']
 
-        let isOk = true
+
         let maxTerm: number
         let initial_payment = 0
         if (creditType === 'Ипотека') {
@@ -154,7 +170,7 @@ const Result: React.FC = () => {
                         setReasons(reasons => [...reasons, 'Из-за отсутвия подтверждения дохода сумма кредита максимум 1млн руб.'])
                     }
                     if (creditType === 'Авто-кредит') {
-                        setReasons(reasons => [...reasons, 'Обратить внимание на подтверждающие документы.'])  
+                        setReasons(reasons => [...reasons, 'Обратить внимание на подтверждающие документы.'])
                     }
                     amount = 1000000
                 }
@@ -297,24 +313,28 @@ const Result: React.FC = () => {
             <h1 className={`approval-title ${isApproved ? "approved" : "declined"}`}>
                 {isApproved ? "Будет одобрено" : "Будет отказ"}
             </h1>
+            {reasons.length !== 0 &&
+                <div className="result-box">
+                    <h2>Причины:</h2>
+                    <ul>
+                        {reasons.map((reason, index) => (
+                            <li key={index}>{reason}</li>
+                        ))}
+                    </ul>
+                </div>
+            }
 
-            <div className="result-box">
-                <h2>Причины:</h2>
-                <ul>
-                    {reasons.map((reason, index) => (
-                        <li key={index}>{reason}</li>
-                    ))}
-                </ul>
-            </div>
+            {recommendations.length !== 0 &&
+                <div className="recommendation-box">
+                    <h2>Рекомендации:</h2>
+                    <ul>
+                        {recommendations.map((rec, index) => (
+                            <li key={index}>{rec}</li>
+                        ))}
+                    </ul>
+                </div>
+            }
 
-            <div className="recommendation-box">
-                <h2>Рекомендации:</h2>
-                <ul>
-                    {recommendations.map((rec, index) => (
-                        <li key={index}>{rec}</li>
-                    ))}
-                </ul>
-            </div>
 
             <button onClick={handlerEnd} className="button">
                 Завершить
