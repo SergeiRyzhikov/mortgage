@@ -4,37 +4,37 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
-const Question1: React.FC = () => {
+const Work: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [secondAnswer, setSecondAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const choiceTypes = ['Да', 'Нет']
 
+    const choiceTypes = ['Учитель', 'Врач', 'IT', 'ИП', 'Государственная компания', 'Прочее']
+    const choiceTypes2 = ['Да', 'Нет']
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
     const handleFirstChoice = (answer: string) => {
-        setFirstAnswer(answer)
-        if (answer === "Нет") {
-            setSecondAnswer(null)
+        setFirstAnswer(answer);
+        if (answer !== "Нет") {
+            setSecondAnswer(null);
             return
         }
-
     };
 
     const handleContinue = () => {
-        if ((firstAnswer === "Да" && !secondAnswer) || (!firstAnswer)) {
+        if ((firstAnswer === "ИП" && !secondAnswer) || (!firstAnswer)) {
             setErrorMessage('Пожалуйста, заполните все поля.')
             return;
         }
 
         if (secondAnswer) {
-            updateAnswer('1', `${firstAnswer}|${secondAnswer}`)
+            updateAnswer('work', `${firstAnswer}|${secondAnswer}`)
         }
         else {
-            updateAnswer('1', `${firstAnswer}`)
+            updateAnswer('work', `${firstAnswer}`)
         }
-        navigate('/2', { state: { from: '1' } })
+        navigate('/18')
     };
 
     useEffect(() => {
@@ -46,7 +46,7 @@ const Question1: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">1. Есть ли у Вас судимость?</p>
+                <p className="question-text">17. Сфера деятельности</p>
                 <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <Card
@@ -59,12 +59,11 @@ const Question1: React.FC = () => {
                     ))}
                 </div>
             </div>
-
-            {firstAnswer === "Да" && (
+            {firstAnswer === "ИП" && (
                 <div className="question">
-                    <p className="question-text">По экономической статье?</p>
+                    <p className="question-text">Есть ли справка по форме банка и 2-НДФЛ?</p>
                     <div className="grid-container">
-                        {choiceTypes.map((type) => (
+                        {choiceTypes2.map((type) => (
                             <Card
                                 key={type}
                                 isSelected={secondAnswer === type}
@@ -84,4 +83,4 @@ const Question1: React.FC = () => {
     );
 };
 
-export default Question1;
+export default Work;

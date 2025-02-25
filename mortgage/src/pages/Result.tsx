@@ -11,44 +11,38 @@ const Result: React.FC = () => {
     const [recommendations, setRecommendations] = useState<string[]>([])
     const [isApproved, setIsApproved] = useState<boolean>()
     const answers = {
-        "1": "Да|Нет",
-        "2": "Да|Тинькофф Банк",
-        "3": "Нет",
-        "4": "",
-        "5": "57",
-        "6": "2005-10-10",
-        "7": "Женат/замужем",
-        "8": "2",
-        "9": "Да",
-        "10": "Комбинированная|380000",
-        "11": "2023-10-10",
-        "12": "ИП|Да",
-        "14": "2022-02-01,2021-05-03",
-        "15": "Москва",
-        "16": "Квартира/Дом",
-        "17": "Высшее",
-        "18": "",
-        "доп1": "Потребительский кредит",
-        "доп2": "0",
-        "доп3": "[0]",
-        "доп4": "[100,90000]",
+        "credit_type": "Ипотека",
+        "mortgage_type": "Арктическая",
+        "term": "15",
+        "amount": "10000000",
+        "initial_payment": "2000000",
+        "procent": "6",
+        "maxTerm": "20",
+        "region": "Архангельская область",
+        "resident": "Да",
+        "judge": "Да|Нет",
+        "FSSP": "Нет",
+        "bankSalaryman": "Да|Банк ВТБ",
+        "creditScore": "800",
+        "доп1": "[\"Ипотека\",\"Кредитная карта\"]",
+        "доп2": "3",
+        "доп3": "[2,3,5]",
+        "доп31": "1",
+        "доп4": "[123123]",
         "доп5": "Да",
-        "доп6": "Нет",
+        "доп6": "Да",
         "доп7": "Нет",
-        "доп8": "-",
-        "доп9": "500",
-        // "credit_type": "Ипотека",
-        // "mortgage_type": "Семейная",
-        // "term": "15",
-        // "amount": "100000000",
-        // "initial_payment": "2000000",
-        // "procent": "6",
-        // "maxTerm": "20",
-        "credit_type": "Микрозайм",
-        "term": "5",
-        "amount": "2000000",
-        "procent": "20",
-        'salaryConf': 'Нет'
+        "доп8": "+",
+        "dateBirth": "1999-01-01",
+        "family": "Холост",
+        "amountChildren": "2",
+        "childrenBirth": "2005-10-10,2020-10-10",
+        "dependents": "2",
+        "salary": "Официальная|30000",
+        "experience": "2020-01-01",
+        "work": "Врач",
+        "education": "Высшее",
+        "availability": "[\"Автомобиль\",\"Квартира/Дом\",\"Земельный участок\"]"
     }
 
     const findCurrentPayment = (term: number, procent: number, initial_payment: number, amount: number): number => {
@@ -62,7 +56,6 @@ const Result: React.FC = () => {
     const findAmount = (newCurrentPayment: number, maxTerm: number, initial_payment: number, procent: number): number => {
         const monthlyProcent = procent / 1200
         const mainProcent = (1 + monthlyProcent) ** (maxTerm * 12)
-
         return Math.round((newCurrentPayment * (mainProcent - 1)) / (monthlyProcent * mainProcent) + initial_payment)
     }
 
@@ -82,22 +75,31 @@ const Result: React.FC = () => {
 
         if (amountOfChildren !== 0) {
             const children = countUnder18(birthOfChildren)
+
             amountOfPeople += children
         }
+
         amountOfPeople += amountOfDependents
+
         amountOfPeople += family === 'Холост' ? 1 : 2
 
-        s += limits.reduce((partialSum: number, a: number) => partialSum + a, 0) / 10
-        s += payments.reduce((partialSum: number, a: number) => partialSum + a, 0)
+        if (limits.length !== 0) {
+            s += limits.reduce((partialSum: number, a: number) => partialSum + a, 0) / 10
+        }
+        if (payments.length !== 0) {
+            s += payments.reduce((partialSum: number, a: number) => partialSum + a, 0)
+        }
         s += currentPayment
 
         if (s >= 90000) {
             s += amountOfPeople * 20000
+
             s *= 2
             if (s < salary) {
                 return [true, 0]
             }
             else {
+
                 return [false, (s - salary) / 2]
             }
         }
@@ -106,13 +108,27 @@ const Result: React.FC = () => {
                 return [true, 0]
             }
             else {
+
                 return [false, Math.round(s - 0.3 * salary)]
             }
         }
     }
 
+    const commonRecommendations = (isCreditsBefore: string, isRejectsBefore: string) => {
+        // общие рекомендации
+        if (isCreditsBefore === 'Да') {
+            setRecommendations(recommendations => [...recommendations, 'У вас уже были кредиты - это хорошо.'])
+        }
+        if (isRejectsBefore === 'Да') {
+            setRecommendations(recommendations => [...recommendations, 'Каждый отказ снижает кредитный рейтинг. Если были отказы, то шансы невысокие.'])
+        }
+
+        setRecommendations(recommendations => [...recommendations, 'Проверьте подтверждающие документы.'])
+        setRecommendations(recommendations => [...recommendations, 'Обязательно проверьте созаёмщика/поручителя!'])
+    }
+
     const mainTree = () => {
-        const creditScore = Number(answers['доп9'])
+        const creditScore = Number(answers['creditScore'])
         const expirations = answers['доп8']
         const creditType = answers['credit_type']
         let isOk = true
@@ -131,23 +147,25 @@ const Result: React.FC = () => {
 
         }
         // В "Итог": 1. Микрозайм не дадут   В "Рекомендации": 1.(если ответил, что есть активные просрочки) 2. (если ответил, что он ниже 500)
-        const [residentRF, residentPermit] = answers['9'].split('|')
-        let [typeSalary, salaryString] = answers['10'].split('|')
-        const [isSalaryBank, bank] = answers['2'].split('|')
-        const [typeWork, isIPSparvki] = answers['12'].split('|')
-        const [criminalRecord, isEcononmicCriminalRecord] = answers['1'].split('|')
+        const [residentRF, residentPermit] = answers['resident'].split('|')
+        let [typeSalary, salaryString] = answers['salary'].split('|')
+        const [isSalaryBank, bank] = answers['bankSalaryman'].split('|')
+        const [typeWork, isIPSparvki] = answers['work'].split('|')
+        const [criminalRecord, isEcononmicCriminalRecord] = answers['judge'].split('|')
         const limits = JSON.parse(answers['доп3'])
         const payments = JSON.parse(answers['доп4'])
-        const amountOfChildren = Number(answers['8'])
-        const amountOfDependents = Number(answers['18'])
-        const birthOfChildren = answers['14']
-        const family = answers['7']
+        const amountOfChildren = Number(answers['amountChildren'])
+        const amountOfDependents = Number(answers['dependents'])
+        const birthOfChildren = answers['childrenBirth']
+        const family = answers['family']
         const salary = Number(salaryString)
         const procent = Number(answers['procent'])
         const term = Number(answers['term'])
         let amount = Number(answers['amount'])
-        const FSSP = answers['3']
-        const experience = monthsSince(answers['11'])
+        const FSSP = answers['FSSP']
+        const experience = monthsSince(answers['experience'])
+        const isCreditsBefore = answers['доп5']
+        const isRejectsBefore = answers['доп6']
 
 
         let maxTerm: number
@@ -227,7 +245,6 @@ const Result: React.FC = () => {
         const currentPayment = findCurrentPayment(term, procent, initial_payment, amount)
         const [isFinOk, deficit] = checkFinNagruzka(currentPayment, limits, payments, amountOfChildren, amountOfDependents, birthOfChildren, family, salary)
 
-
         if (!isFinOk) {
 
             isOk = false
@@ -241,8 +258,6 @@ const Result: React.FC = () => {
                 }
             }
             else {
-                console.log('можно исправит')
-                console.log(term, maxTerm)
                 let newTerm = 0;
                 let newCurrentPayment = 0;
                 for (let i = term; i <= maxTerm; i++) {
@@ -264,9 +279,9 @@ const Result: React.FC = () => {
 
                 }
                 else {
+
                     newCurrentPayment = currentPayment - deficit
                     const amount = findAmount(newCurrentPayment, maxTerm, initial_payment, procent)
-
                     setReasons(reasons => [...reasons, `Увеличат срок кредита. ${maxTerm} ${getYearsDeclension(maxTerm)}`])
                     setReasons(reasons => [...reasons, `Урежут сумму кредита. До ${amount.toLocaleString('ru-RU')} руб`])
                     setReasons(reasons => [...reasons, `Финансовая нагрузка слишком большая. Вам не хватает ${deficit.toLocaleString('ru-RU')} руб./мес.`])
@@ -294,6 +309,8 @@ const Result: React.FC = () => {
             setReasons(reasons => [...reasons, `Результат может быть неточным из-за отсутствия данных о кредитном рейтинге.`])
         }
 
+        commonRecommendations(isCreditsBefore, isRejectsBefore)
+
         setIsApproved(isOk)
 
     }
@@ -305,6 +322,7 @@ const Result: React.FC = () => {
 
     const handlerEnd = () => {
         // clearAnswers()
+
         navigate("/")
     }
 

@@ -1,15 +1,15 @@
 import React from "react";
 import QuestionCard from "../components/QuestionCard";
 
-const Question17: React.FC = () => {
+const Education: React.FC = () => {
     return (
         <QuestionCard
             choiceTypes={['Высшее', 'Среднее специальное', 'Среднее техническое', 'Основное общее']}
-            questionText='17. Образование'
-            answerId={'17'}
-            navigatePath={'/18'}
+            questionText='18. Образование'
+            answerId={'education'}
+            navigatePath={'/19'}
         />
     );
 };
 
-export default Question17;
+export default Education;

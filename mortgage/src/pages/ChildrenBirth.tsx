@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 
-const Question14: React.FC = () => {
+const ChildrenBirth: React.FC = () => {
     // const [firstAnswer, setFirstAnswer] = useState<string>("2005-10-10");
     const [firstAnswer, setFirstAnswer] = useState<Array<string>>([])
     const navigate = useNavigate();
@@ -11,19 +11,18 @@ const Question14: React.FC = () => {
 
     const handleContinue = () => {
         console.log(firstAnswer)
-        updateAnswer('14', `${firstAnswer}`)
-        navigate('/15')
+        updateAnswer('childrenBirth', `${firstAnswer}`)
+        navigate('/14')
 
         console.log(answers)
     };
 
     useEffect(() => {
-        console.log(answers['8'])
-        const numberOfChildren = Number(answers['8'])
+        const numberOfChildren = Number(answers['amountChildren'])
         // const numberOfChildren = 10
         if (numberOfChildren === 0) {
-            updateAnswer('14', `0`)
-            navigate('/15')
+            updateAnswer('childrenBirth', `0`)
+            navigate('/14')
         }
         const newAr = []
         for (let i = 0; i < numberOfChildren; i++) {
@@ -37,7 +36,7 @@ const Question14: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">14. Введите даты рождения всех детей</p>
+                <p className="question-text">13. Введите даты рождения всех детей</p>
                 <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(1, 1fr)' }}>
                     {firstAnswer.map((i, index) =>
                         <input
@@ -66,4 +65,4 @@ const Question14: React.FC = () => {
     );
 };
 
-export default Question14;
+export default ChildrenBirth;

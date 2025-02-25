@@ -3,14 +3,14 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import NumberInput from "../components/NumberInput/NumberInput";
 
-const Question18: React.FC = () => {
+const AmountDependents: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<number>(0);
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
     const handleContinue = () => {
-        updateAnswer('18', `${firstAnswer}`)
-        navigate('/result')
+        updateAnswer('dependents', `${firstAnswer}`)
+        navigate('/15')
         console.log(answers)
     };
 
@@ -23,7 +23,7 @@ const Question18: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">18. Количество иждивенцов</p>
+                <p className="question-text">14. Количество иждивенцов, кроме детей</p>
                 <div className="grid-container">
                     <NumberInput
                         min={0}
@@ -41,4 +41,4 @@ const Question18: React.FC = () => {
     );
 };
 
-export default Question18;
+export default AmountDependents;

@@ -3,14 +3,14 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import NumberInput from "../components/NumberInput/NumberInput";
 
-const Question8: React.FC = () => {
+const CreditScore: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<number>(0);
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
     const handleContinue = () => {
-        updateAnswer('8', `${firstAnswer}`)
-        navigate('/9')
+        updateAnswer('creditScore', `${firstAnswer}`)
+        navigate('/extra1')
         console.log(answers)
     };
 
@@ -23,11 +23,11 @@ const Question8: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">8. Количество детей, указанное в паспорте</p>
+                <p className="question-text">Введите свой кредитный рейтинг, если он Вам известен</p>
                 <div className="grid-container">
                     <NumberInput
                         min={0}
-                        max={99}
+                        max={999}
                         label={''}
                         value={firstAnswer}
                         setValue={setFirstAnswer}
@@ -41,4 +41,4 @@ const Question8: React.FC = () => {
     );
 };
 
-export default Question8;
+export default CreditScore;

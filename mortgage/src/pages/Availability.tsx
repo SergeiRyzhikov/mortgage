@@ -4,7 +4,7 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
-const Question16: React.FC = () => {
+const Availability: React.FC = () => {
     const [selectedAnswers, setSelectedAnswers] = useState<string[]>([])
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
@@ -24,8 +24,8 @@ const Question16: React.FC = () => {
 
     const handleContinue = () => {
         if (selectedAnswers.length > 0) {
-            updateAnswer('16', JSON.stringify(selectedAnswers))
-            navigate('/17');
+            updateAnswer('availability', JSON.stringify(selectedAnswers))
+            navigate('/result');
         } else {
             setErrorMessage('Пожалуйста, выберите хотя бы один вариант.');
         }
@@ -41,7 +41,7 @@ const Question16: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">16. Наличие</p>
+                <p className="question-text">19. Наличие</p>
                 <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <Card
@@ -62,4 +62,4 @@ const Question16: React.FC = () => {
     );
 };
 
-export default Question16;
+export default Availability;

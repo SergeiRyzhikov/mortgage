@@ -66,7 +66,7 @@ const MortgageSelection: React.FC = () => {
             navigate("/salaryConf");
             return
         }
-        navigate("/14");
+        navigate("/2");
     };
 
     const getMaxTerm = () => {

@@ -32,7 +32,7 @@ const regions = [
     "ДНР", "ЛНР", "Херсонская область", "Запорожская область"
 ];
 
-const Question15: React.FC = () => {
+const Region: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [region, setRegion] = useState<string>("");
     const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -48,9 +48,14 @@ const Question15: React.FC = () => {
         setRegion(input);
 
         if (input.length > 0) {
-            const filtered = regions.filter((r) =>
-                r.toLowerCase().startsWith(input.toLowerCase())
-            );
+            const filtered = regions
+                .filter((r) => r.toLowerCase().includes(input.toLowerCase()))
+                .sort((a, b) => {
+                    const aIndex = a.toLowerCase().indexOf(input.toLowerCase());
+                    const bIndex = b.toLowerCase().indexOf(input.toLowerCase());
+                    return aIndex - bIndex; // Сортируем по положению найденного фрагмента
+                });
+
             setSuggestions(filtered);
         } else {
             setSuggestions([]);
@@ -68,8 +73,8 @@ const Question15: React.FC = () => {
             return;
         }
 
-        updateAnswer("15", region);
-        navigate("/16");
+        updateAnswer("region", region);
+        navigate("/3");
         console.log(answers);
     };
 
@@ -78,7 +83,7 @@ const Question15: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">15. Регион, где планируете взять ипотеку</p>
+                <p className="question-text">2. Регион, где планируете взять ипотеку</p>
                 <div className="input-container">
                     <input
                         type="text"
@@ -107,4 +112,4 @@ const Question15: React.FC = () => {
     );
 };
 
-export default Question15;
+export default Region;

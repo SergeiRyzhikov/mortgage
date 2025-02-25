@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
-import NumberInput from "../components/NumberInput/NumberInput";
 
-const Question5: React.FC = () => {
-    const [firstAnswer, setFirstAnswer] = useState<number>(0);
+const Experience: React.FC = () => {
+    const [firstAnswer, setFirstAnswer] = useState<string>("2024-10-10");
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
     const handleContinue = () => {
-        updateAnswer('5', `${firstAnswer}`)
-        navigate('/6')
+        console.log(firstAnswer)
+        updateAnswer('experience', `${firstAnswer}`)
+        navigate('/17')
+
         console.log(answers)
     };
 
@@ -23,15 +24,18 @@ const Question5: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">5. Введите свой скоринговый балл</p>
+                <p className="question-text">16. Стаж работы на последнем месте. С какой даты?</p>
                 <div className="grid-container">
-                    <NumberInput
-                        min={0}
-                        max={99}
-                        label={''}
+                    <input
+                        type="date"
+                        name="trip-start"
                         value={firstAnswer}
-                        setValue={setFirstAnswer}
+                        min="1900-01-01"
+                        max="2026-12-31"
+                        className="date-input"
+                        onChange={(e) => setFirstAnswer(e.target.value)}
                     />
+
                 </div>
             </div>
             <button onClick={handleContinue} className="button">
@@ -41,4 +45,4 @@ const Question5: React.FC = () => {
     );
 };
 
-export default Question5;
+export default Experience;

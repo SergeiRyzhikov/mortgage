@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSurvey } from "../SurveyContext";
 
 
-const UploadCreditHistory: React.FC = () => {
+const Pdf: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
     const navigate = useNavigate();
     const { updateAnswer } = useSurvey();
@@ -22,7 +22,7 @@ const UploadCreditHistory: React.FC = () => {
 
     const handleUpload = () => {
         if (!file) {
-            updateAnswer('4', '')
+            updateAnswer('pdf', '')
             navigate('/extra1')
             return;
         }
@@ -50,4 +50,4 @@ const UploadCreditHistory: React.FC = () => {
     );
 };
 
-export default UploadCreditHistory;
+export default Pdf;

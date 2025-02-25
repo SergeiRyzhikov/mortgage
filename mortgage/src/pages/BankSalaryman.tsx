@@ -24,13 +24,12 @@ const banks = [
 ]
 
 
-const Question2: React.FC = () => {
+const BankSalaryman: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [bank, setBank] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const choiceTypes = ['Да', 'Нет']
-    const location = useLocation();
 
 
     const navigate = useNavigate();
@@ -56,12 +55,12 @@ const Question2: React.FC = () => {
         }
 
         if (bank.length !== 0) {
-            updateAnswer('2', `${firstAnswer}|${bank}`)
+            updateAnswer('bankSalaryman', `${firstAnswer}|${bank}`)
         }
         else {
-            updateAnswer('2', `${firstAnswer}`)
+            updateAnswer('bankSalaryman', `${firstAnswer}`)
         }
-        navigate('/3')
+        navigate('/7')
     };
 
 
@@ -70,14 +69,20 @@ const Question2: React.FC = () => {
         setBank(input);
 
         if (input.length > 0) {
-            const filtered = banks.filter((r) =>
-                r.toLowerCase().startsWith(input.toLowerCase())
-            );
+            const filtered = banks
+                .filter((r) => r.toLowerCase().includes(input.toLowerCase()))
+                .sort((a, b) => {
+                    const aIndex = a.toLowerCase().indexOf(input.toLowerCase());
+                    const bIndex = b.toLowerCase().indexOf(input.toLowerCase());
+                    return aIndex - bIndex; // Сортируем по положению найденного фрагмента
+                });
+
             setSuggestions(filtered);
         } else {
             setSuggestions([]);
         }
     };
+
 
     const handleSelectBank = (selected: string) => {
         setBank(selected);
@@ -85,11 +90,6 @@ const Question2: React.FC = () => {
     };
 
     useEffect(() => {
-        const previousStep = location.state?.from;
-        console.log(previousStep)
-        if (previousStep != 1) {
-            navigate('/')
-        }
         console.log(answers)
     }, [])
 
@@ -98,7 +98,7 @@ const Question2: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">2. Являетесь ли Вы зарплатником банка?</p>
+                <p className="question-text">6. Являетесь ли Вы зарплатником банка?</p>
                 <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <Card
@@ -142,4 +142,4 @@ const Question2: React.FC = () => {
     );
 };
 
-export default Question2;
+export default BankSalaryman;

@@ -10,7 +10,7 @@ const QuestionPercent: React.FC = () => {
 
     const handleContinue = () => {
         updateAnswer('procent', `${firstAnswer}`)
-        navigate('/14')
+        navigate('/2')
         console.log(answers)
     };
 

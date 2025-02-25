@@ -4,7 +4,7 @@ import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
-const Question9: React.FC = () => {
+const Resident: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [secondAnswer, setSecondAnswer] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -28,12 +28,12 @@ const Question9: React.FC = () => {
         }
 
         if (secondAnswer) {
-            updateAnswer('9', `${firstAnswer}|${secondAnswer}`)
+            updateAnswer('resident', `${firstAnswer}|${secondAnswer}`)
         }
         else {
-            updateAnswer('9', `${firstAnswer}`)
+            updateAnswer('resident', `${firstAnswer}`)
         }
-        navigate('/10')
+        navigate('/4')
     };
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const Question9: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">9. Являетесь ли резидентом РФ?</p>
+                <p className="question-text">3. Являетесь ли резидентом РФ?</p>
                 <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <Card
@@ -82,4 +82,4 @@ const Question9: React.FC = () => {
     );
 };
 
-export default Question9;
+export default Resident;

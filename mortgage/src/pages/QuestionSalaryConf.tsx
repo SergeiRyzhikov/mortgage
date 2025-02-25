@@ -5,7 +5,7 @@ const QuestionSalaryConf: React.FC = () => {
     return (
         <QuestionCard
             choiceTypes={['Да', 'Нет']}
-            questionText='13.1 Есть ли подтверждение дохода?'
+            questionText='Есть ли подтверждение дохода?'
             answerId={'salaryConf'}
             navigatePath={'/percent'}
         />

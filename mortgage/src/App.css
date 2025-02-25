@@ -7,9 +7,8 @@ body {
   background-color: #f7f7f7;
   color: #333;
 }
-body {
-  
-}
+
+body {}
 
 html,
 body {
@@ -104,11 +103,14 @@ body {
   text-align: center;
   font-size: 1.2rem;
   font-weight: 600;
-  max-width: 600px; /* Ограничение ширины */
-  overflow-wrap: break-word; /* Перенос длинных слов */
+  max-width: 600px;
+  /* Ограничение ширины */
+  overflow-wrap: break-word;
+  /* Перенос длинных слов */
   white-space: normal;
   line-height: 1.4;
-  margin: 0 auto; /* Центрирование по горизонтали */
+  margin: 0 auto;
+  /* Центрирование по горизонтали */
   margin-bottom: 1rem;
   margin-top: 1rem;
 }
@@ -180,14 +182,62 @@ input[type="date"]:focus {
 }
 
 /* Убираем стандартную иконку календаря в Chrome, Safari */
-input[type="date"]::-webkit-calendar-picker-indicator {
+/* input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(0.3);
   cursor: pointer;
   transition: transform 0.2s ease;
-}
+} */
 
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
   transform: scale(1.1);
+}
+
+.card-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  /* Карточка растягивается */
+  text-align: center;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 130%;
+  /* Оставляем сверху */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 1rem;
+  white-space: normal;
+  width: 100%;
+  /* Теперь ширина = карточке */
+  max-width: 250px;
+  /* Ограничиваем максимальную ширину */
+  text-align: center;
+  box-sizing: border-box;
+  /* Чтобы padding не увеличивал ширину */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  z-index: 10;
+  line-height: 1.4;
+}
+
+/* Показываем tooltip при наведении */
+.card-wrapper:hover .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+/* 🔹 На телефонах: увеличиваем ширину под карточку */
+@media (max-width: 768px) {
+  .tooltip {
+    max-width: 90%;
+    /* Подстраиваем под экран */
+  }
 }
 
 

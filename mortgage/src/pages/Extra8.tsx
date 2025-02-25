@@ -33,7 +33,7 @@ const Extra8: React.FC = () => {
         else {
             updateAnswer('доп8', `+`)
         }
-        navigate('/extra9')
+        navigate('/10')
 
     };
     useEffect(() => {
