@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Card from "../components/Card/Card";
 import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";

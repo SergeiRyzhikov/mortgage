@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "../components/Card/Card";
 import { useSurvey } from "../SurveyContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 
 const banks = [
@@ -30,8 +30,6 @@ const BankSalaryman: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const choiceTypes = ['Да', 'Нет']
-
-
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 

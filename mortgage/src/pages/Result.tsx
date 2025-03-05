@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import "../styles/Result.css";
-import { countUnder18, getYearsDeclension, monthsSince } from "../utils";
+import { countUnder18, countUnder6, findAmount, findCurrentPayment, getYearsDeclension, monthsSince } from "../utils";
 
 const Result: React.FC = () => {
     // const { answers, clearAnswers } = useSurvey();
@@ -10,6 +10,8 @@ const Result: React.FC = () => {
     const [reasons, setReasons] = useState<string[]>([])
     const [recommendations, setRecommendations] = useState<string[]>([])
     const [isApproved, setIsApproved] = useState<boolean>()
+    const [isCreditType, setIsCreditType] = useState<boolean>(true)
+    const [isCreditScore, setIsCreditScore] = useState<boolean>(false)
     const answers = {
         "credit_type": "Ипотека",
         "mortgage_type": "Арктическая",
@@ -18,12 +20,12 @@ const Result: React.FC = () => {
         "initial_payment": "2000000",
         "procent": "6",
         "maxTerm": "20",
-        "region": "Архангельская область",
+        "region": "Астраханьская область",
         "resident": "Да",
         "judge": "Да|Нет",
-        "FSSP": "Нет",
+        "FSSP": "Да",
         "bankSalaryman": "Да|Банк ВТБ",
-        "creditScore": "800",
+        "creditScore": "0",
         "доп1": "[\"Ипотека\",\"Кредитная карта\"]",
         "доп2": "3",
         "доп3": "[2,3,5]",
@@ -38,25 +40,55 @@ const Result: React.FC = () => {
         "amountChildren": "2",
         "childrenBirth": "2005-10-10,2020-10-10",
         "dependents": "2",
-        "salary": "Официальная|30000",
+        "salary": "Комбинированная|600000",
+        "salaryExtra": "300000",
         "experience": "2020-01-01",
         "work": "Врач",
         "education": "Высшее",
         "availability": "[\"Автомобиль\",\"Квартира/Дом\",\"Земельный участок\"]"
     }
+    const regionsDFO = ["Бурятия", "Саха (Якутия)", "Забайкальский край", "Камчатский край", "Приморский край", "Хабаровский край", "Амурская область", "Магаданская область", "Сахалинская область", "Еврейская автономная область", "Чукотский автономный округ"]
+    const regionsArctika = ["Мурманская область", "Ненецкий автономный округ", "Ямало-Ненецкий автономный округ", "Карелия", "Коми", "Архангельская область", "Красноярский край"]
+    const findTypesOfCredit = (dateBirth: string, region: string, childrenBirth: string, family: string, amountOfChildren: number, work: string) => {
+        const givenDate = new Date(dateBirth)
+        const currentDate = new Date()
+        const age = currentDate.getFullYear() - givenDate.getFullYear()
+        const typesOfCredit = ['Нельготная']
+        let children = 0
+        let childrenUnder6 = 0
+        if (amountOfChildren !== 0) {
+            children = countUnder18(childrenBirth)
+            childrenUnder6 = countUnder6(childrenBirth)
+        }
+        if (age <= 21 || age >= 65) {
+            return []
+        }
+        if (regionsDFO.includes(region)) {
+            if ((family === 'Женат/замужем' && age <= 35) || (family === 'Холост' && children >= 1)) {
+                typesOfCredit.push('Дальневосточная')
+            }
+            if (work === 'Врач' || work === 'Учитель') {
+                typesOfCredit.push('Дальневосточная')
+            }
+        }
 
-    const findCurrentPayment = (term: number, procent: number, initial_payment: number, amount: number): number => {
-        const monthlyProcent = procent / 1200
-        const mainProcent = (1 + monthlyProcent) ** (term * 12)
-        const sum = amount - initial_payment
-        const currentPayment = Math.round(sum * monthlyProcent * mainProcent / (mainProcent - 1))
-        return currentPayment
-    }
+        if (children >= 2 || childrenUnder6 >= 1) {
+            typesOfCredit.push('Семейная')
+        }
+        if (work === 'IT' && age <= 50) {
+            typesOfCredit.push('IT')
+        }
 
-    const findAmount = (newCurrentPayment: number, maxTerm: number, initial_payment: number, procent: number): number => {
-        const monthlyProcent = procent / 1200
-        const mainProcent = (1 + monthlyProcent) ** (maxTerm * 12)
-        return Math.round((newCurrentPayment * (mainProcent - 1)) / (monthlyProcent * mainProcent) + initial_payment)
+        if (regionsArctika.includes(region)) {
+            console.log('проживает')
+            if ((family === 'Женат/замужем' && age <= 35) || (family === 'Холост' && children >= 1)) {
+                typesOfCredit.push('Арктическая')
+            }
+            if (work === 'Врач' || work === 'Учитель') {
+                typesOfCredit.push('Арктическая')
+            }
+        }
+        return typesOfCredit
     }
 
     const checkFinNagruzka = (
@@ -75,7 +107,6 @@ const Result: React.FC = () => {
 
         if (amountOfChildren !== 0) {
             const children = countUnder18(birthOfChildren)
-
             amountOfPeople += children
         }
 
@@ -162,7 +193,9 @@ const Result: React.FC = () => {
         const procent = Number(answers['procent'])
         const term = Number(answers['term'])
         let amount = Number(answers['amount'])
+        const dateBirth = answers['dateBirth']
         const FSSP = answers['FSSP']
+        const region = answers['region']
         const experience = monthsSince(answers['experience'])
         const isCreditsBefore = answers['доп5']
         const isRejectsBefore = answers['доп6']
@@ -173,6 +206,12 @@ const Result: React.FC = () => {
         if (creditType === 'Ипотека') {
             maxTerm = Number(answers['maxTerm'])
             initial_payment = Number(answers['initial_payment'])
+            const mortgage_type = answers['mortgage_type']
+            const typesOfCredit = findTypesOfCredit(dateBirth, region, birthOfChildren, family, amountOfChildren, typeWork)
+            console.log(typesOfCredit)
+            if (!typesOfCredit.includes(mortgage_type)) {
+                setIsCreditType(false)
+            }
         }
         else {
             maxTerm = 7
@@ -243,7 +282,16 @@ const Result: React.FC = () => {
             setRecommendations(recommendations => [...recommendations, 'Выплатить 3 платежа.'])
         }
         const currentPayment = findCurrentPayment(term, procent, initial_payment, amount)
-        const [isFinOk, deficit] = checkFinNagruzka(currentPayment, limits, payments, amountOfChildren, amountOfDependents, birthOfChildren, family, salary)
+        let [isFinOk, deficit] = checkFinNagruzka(currentPayment, limits, payments, amountOfChildren, amountOfDependents, birthOfChildren, family, salary)
+
+        if (typeSalary === 'Комбинированная' && isFinOk) {
+            const salaryExtra = Number(answers['salaryExtra'])
+            let [isFinOk, deficit] = checkFinNagruzka(currentPayment, limits, payments, amountOfChildren, amountOfDependents, birthOfChildren, family, salary - salaryExtra)
+            if (!isFinOk) {
+                setReasons(reasons => [...reasons, `Не хватает ${deficit.toLocaleString('ru-RU')} рублей официальной заработной платы. Возьмите справку по форме банка на всю сумму.Так как общая комбинированная зарплата финансовой нагрузке соответствует.`])
+            }
+        }
+
 
         if (!isFinOk) {
 
@@ -253,9 +301,9 @@ const Result: React.FC = () => {
                 setReasons(reasons => [...reasons, `Финансовая нагрузка слишком большая. Вам не хватает ${deficit.toLocaleString('ru-RU')} руб./мес.`])
                 setRecommendations(recommendations => [...recommendations, `Закрыть действующие кредитные карты и платежи и уменьшить фин. нагрузку на ${deficit.toLocaleString('ru-RU')} руб./мес.`])
 
-                if (typeSalary === 'Комбинированная') {
-                    setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП).'])
-                }
+                // if (typeSalary === 'Комбинированная') {
+                //     setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП).'])
+                // }
             }
             else {
                 let newTerm = 0;
@@ -273,9 +321,9 @@ const Result: React.FC = () => {
                     setReasons(reasons => [...reasons, `Финансовая нагрузка слишком большая. Вам не хватает ${deficit.toLocaleString('ru-RU')} руб./мес.`])
                     setRecommendations(recommendations => [...recommendations, `Закрыть действующие кредитные карты и платежи и уменьшить фин. нагрузку на ${deficit.toLocaleString('ru-RU')} руб./мес.`])
 
-                    if (typeSalary === 'Комбинированная') {
-                        setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП).'])
-                    }
+                    // if (typeSalary === 'Комбинированная') {
+                    //     setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП).'])
+                    // }
 
                 }
                 else {
@@ -287,9 +335,9 @@ const Result: React.FC = () => {
                     setReasons(reasons => [...reasons, `Финансовая нагрузка слишком большая. Вам не хватает ${deficit.toLocaleString('ru-RU')} руб./мес.`])
                     setRecommendations(recommendations => [...recommendations, `Закрыть действующие кредитные карты и платежи и уменьшить фин. нагрузку на ${deficit.toLocaleString('ru-RU')} руб./мес.`])
 
-                    if (typeSalary === 'Комбинированная') {
-                        setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП).'])
-                    }
+                    // if (typeSalary === 'Комбинированная') {
+                    //     setReasons(reasons => [...reasons, 'Требуется справка по форме банка на всю сумму (сколько не хватает из официальной ЗП).'])
+                    // }
                 }
             }
         }
@@ -306,12 +354,16 @@ const Result: React.FC = () => {
             }
         }
         else {
+            // setIsCreditScore(false)
             setReasons(reasons => [...reasons, `Результат может быть неточным из-за отсутствия данных о кредитном рейтинге.`])
         }
 
         commonRecommendations(isCreditsBefore, isRejectsBefore)
 
+
         setIsApproved(isOk)
+
+
 
     }
 
@@ -322,8 +374,10 @@ const Result: React.FC = () => {
 
     const handlerEnd = () => {
         // clearAnswers()
-
         navigate("/")
+    }
+    const handlerNewCredit = () => {
+        navigate("/1", { state: { state: 'result' } })
     }
 
     return (
@@ -333,7 +387,7 @@ const Result: React.FC = () => {
             </h1>
             {reasons.length !== 0 &&
                 <div className="result-box">
-                    <h2>Причины:</h2>
+                    <h2>Причины</h2>
                     <ul>
                         {reasons.map((reason, index) => (
                             <li key={index}>{reason}</li>
@@ -344,7 +398,7 @@ const Result: React.FC = () => {
 
             {recommendations.length !== 0 &&
                 <div className="recommendation-box">
-                    <h2>Рекомендации:</h2>
+                    <h2>Рекомендации</h2>
                     <ul>
                         {recommendations.map((rec, index) => (
                             <li key={index}>{rec}</li>
@@ -352,9 +406,42 @@ const Result: React.FC = () => {
                     </ul>
                 </div>
             }
+            {isCreditScore === false &&
+                <div className="recommendation-box">
+                    <h2>Причины проверить кредитную историю</h2>
+                    <p>
+                        3 главных вопроса о кредитной истории.
+                    </p>
+                    <p>Кредитная история — это информация о ваших кредитных обязательствах. Она показывает, в какие банки или микрофинансовые организации вы обращались за кредитами и займами, когда это было и какие суммы вы брали.</p>
+                    <p>
+                        1️⃣ Как часто обновляется КИ?
+                    </p>
+                    <p>По закону кредиторы обязаны вносить информацию в БКИ в течение 5 рабочих дней. Например, если вы закрыли автокредит в понедельник, то банк должен будет сообщить об этом в бюро до выходных.</p>
+                    <p>2️⃣ Я добросовестно выплачивал кредиты, но у меня плохая кредитная история. Почему?</p>
+                    <p>К сожалению, такое случается. Причин «ошибок» может быть много: <br></br>
+                        1. Кредитная история еще не обновилась;<br></br>
+                        2. Кредит по карте погашен, но карта не закрыта;<br></br>
+                        3. Когда-то давно вы взяли кредит, закрыли и забыли про него
+                        Но оказывается, что осталась маленькая непогашенная сумма за страховку или комиссию. И банк вам об этом не сообщил. В итоге в вашей кредитной истории числится просрочка;<br></br>
+                        4. Сотрудники банка или бюро ошиблись - человеческий фактор.<br></br></p>
+                    <p>3️⃣ Если у меня и вправду плохая кредитная история. Что делать? </p>
+                    <p>Удалить что-либо из кредитной истории нельзя. Но, если вы хотите и дальше кредитоваться, ее можно улучшить. Берите совсем небольшие кредиты или займы и очень аккуратно их гасите. Оформите кредитную карту или купите в кредит бытовую технику.</p>
+                </div>
+            }
+            {isCreditType === false &&
+                <div className="recommendation-box">
+                    <h2>Программа ипотеки</h2>
+                    <p>
+                        Скорее всего, вы не подходите под условия, выбранной ипотеки. Попробуйте выбрать другую.
+                    </p>
 
+                    <button onClick={handlerNewCredit} className="button">
+                        Выбрать программу
+                    </button>
+                </div>
+            }
 
-            <button onClick={handlerEnd} className="button">
+            <button onClick={handlerEnd} className="button" >
                 Завершить
             </button>
         </div>
@@ -362,3 +449,5 @@ const Result: React.FC = () => {
 };
 
 export default Result;
+
+

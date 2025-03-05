@@ -8,6 +8,7 @@ import NumberInput from "../components/NumberInput/NumberInput";
 const Salary: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<string | null>(null);
     const [secondAnswer, setSecondAnswer] = useState<number>(0);
+    const [thirdAnswer, setThirdAnswer] = useState<number>(0);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [hoveredType, setHoveredType] = useState<string | null>(null);
 
@@ -28,7 +29,11 @@ const Salary: React.FC = () => {
 
     const handleContinue = () => {
         if (firstAnswer) {
+
             updateAnswer('salary', `${firstAnswer}|${secondAnswer}`);
+            if (firstAnswer === 'Комбинированная') {
+                updateAnswer('salaryExtra', `${thirdAnswer}`);
+            }
             navigate('/16');
         } else {
             setErrorMessage('Пожалуйста, заполните все поля.');
@@ -48,8 +53,8 @@ const Salary: React.FC = () => {
                 <p className="question-text">15. Укажите тип своей заработной платы</p>
                 <div className="grid-container">
                     {choiceTypes.map((type) => (
-                        <div 
-                            key={type} 
+                        <div
+                            key={type}
                             className="card-wrapper"
                             onMouseEnter={() => setHoveredType(type)}
                             onMouseLeave={() => setHoveredType(null)}
@@ -68,8 +73,9 @@ const Salary: React.FC = () => {
                 </div>
             </div>
 
-            <p className="question-text">Укажите размер заработной платы в рублях в месяц</p>
+
             <div className="question">
+                <p className="question-text" style={{ 'maxWidth': '350px' }}>Укажите размер всей заработной платы в рублях в месяц</p>
                 <NumberInput
                     min={0}
                     max={9999999}
@@ -78,6 +84,19 @@ const Salary: React.FC = () => {
                     setValue={setSecondAnswer}
                 />
             </div>
+
+            {firstAnswer === 'Комбинированная' &&
+                <div className="question">
+                    <p className="question-text" style={{ 'maxWidth': '350px' }}>Укажите часть, которая неофицальная</p>
+                    <NumberInput
+                        min={0}
+                        max={9999999}
+                        label={''}
+                        value={thirdAnswer}
+                        setValue={setThirdAnswer}
+                    />
+                </div>
+            }
 
             <Error message={errorMessage} setMessage={setErrorMessage} />
             <button onClick={handleContinue} className="button">

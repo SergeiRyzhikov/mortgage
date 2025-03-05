@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Card from "../components/Card/Card";
 import { useSurvey } from "../SurveyContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 import NumberInput from "../components/NumberInput/NumberInput";
 import { getYearsDeclension, mortgageTypes } from "../utils";
@@ -15,8 +15,10 @@ const MortgageSelection: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const { updateAnswer } = useSurvey();
     const navigate = useNavigate();
-
+    const location = useLocation();
+    const { state } = location.state || {};
     const creditTypes = ["Ипотека", "Потребительский кредит", "Авто-кредит", "Микрозайм"];
+    console.log(state)
 
     const handleSelectCreditType = (type: string) => {
         setSelectedCreditType(type);
@@ -30,11 +32,11 @@ const MortgageSelection: React.FC = () => {
     };
 
     const handleContinue = () => {
-        if (!selectedCreditType || (selectedCreditType === "Ипотека" && !selectedMortgage) || !term || !amount ) {
+        if (!selectedCreditType || (selectedCreditType === "Ипотека" && !selectedMortgage) || !term || !amount) {
             setErrorMessage("Пожалуйста, заполните все поля.");
             return;
         }
-        if (selectedCreditType === "Ипотека" && !initialPayment){
+        if (selectedCreditType === "Ипотека" && !initialPayment) {
             setErrorMessage("Пожалуйста, заполните все поля.");
             return;
         }
@@ -61,9 +63,15 @@ const MortgageSelection: React.FC = () => {
         const selected = mortgageTypes.find((mortgage) => mortgage.type === selectedMortgage);
         updateAnswer('procent', String(selected?.procent))
         updateAnswer('maxTerm', String(selected?.maxTerm))
+
+
         console.log(selectedCreditType)
         if (selectedCreditType !== "Ипотека") {
             navigate("/salaryConf");
+            return
+        }
+        if (state === 'result') {
+            navigate('/result')
             return
         }
         navigate("/2");
@@ -77,7 +85,7 @@ const MortgageSelection: React.FC = () => {
 
     return (
         <div className="container">
-            <p className="question-text">13. Выберите тип кредита</p>
+            <p className="question-text">1. Выберите тип кредита</p>
             <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(2, 1fr)' }}>
                 {creditTypes.map((type) => (
                     <Card

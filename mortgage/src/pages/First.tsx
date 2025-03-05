@@ -11,8 +11,9 @@ const First: React.FC = () => {
 
     return (
         <div className="container">
+            <h1 className="site-title">Одобри Сам</h1>
             <button onClick={handleContinue} className="button">
-                Начать прохождение анкеты
+                Начать тестирование
             </button>
         </div>
     );

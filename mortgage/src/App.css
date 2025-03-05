@@ -284,3 +284,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     padding: 10px;
   }
 }
+
+.site-title {
+  font-size: 2.5rem; /* Уменьшили размер */
+  font-weight: 600; /* Сделали менее жирным */
+  color: #333; /* Более мягкий тёмный цвет */
+  text-align: center;
+  margin-bottom: 2rem; /* Больше отступа вниз */
+  text-transform: uppercase;
+  letter-spacing: 1.5px; /* Чуть меньше расстояние между буквами */
+  
+}
