@@ -23,7 +23,7 @@ const QuestionPercent: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">13.2 Введите ставку по кредиту</p>
+                <p className="question-text">Введите ставку по кредиту</p>
                 <div className="grid-container">
                     <NumberInput
                         min={0}

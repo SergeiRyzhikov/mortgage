@@ -33,6 +33,11 @@ const Extra8: React.FC = () => {
         else {
             updateAnswer('доп8', `+`)
         }
+        const type = answers['credit_type']
+        if (type === 'Микрозайм') {
+            navigate('/result')
+            return
+        }
         navigate('/10')
 
     };
@@ -45,7 +50,7 @@ const Extra8: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.8. Были ли просрочки?</p>
+                <p className="question-text">Были ли просрочки?</p>
                 <div className="grid-container">
                     <Card
                         isSelected={firstAnswer === "Да"}

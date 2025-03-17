@@ -36,11 +36,17 @@ const Region: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [region, setRegion] = useState<string>("");
     const [suggestions, setSuggestions] = useState<string[]>([]);
+    // const [type, setType] = useState<string[]>([]);
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
     useEffect(() => {
         console.log(answers);
+        const type = answers['credit_type']
+        if (type !== 'Ипотека') {
+            navigate('/3')
+            return
+        }
     }, []);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +89,7 @@ const Region: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">2. Регион, где планируете взять ипотеку</p>
+                <p className="question-text">Регион, где планируете взять ипотеку</p>
                 <div className="input-container">
                     <input
                         type="text"

@@ -96,7 +96,7 @@ const BankSalaryman: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">6. Являетесь ли Вы зарплатником банка?</p>
+                <p className="question-text">Являетесь ли Вы зарплатником банка?</p>
                 <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <Card

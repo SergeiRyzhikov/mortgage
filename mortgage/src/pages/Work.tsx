@@ -46,7 +46,7 @@ const Work: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">17. Сфера деятельности</p>
+                <p className="question-text">Сфера деятельности</p>
                 <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <Card

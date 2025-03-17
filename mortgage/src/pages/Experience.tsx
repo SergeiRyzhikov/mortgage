@@ -24,7 +24,7 @@ const Experience: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">16. Стаж работы на последнем месте. С какой даты?</p>
+                <p className="question-text">Стаж работы на последнем месте. С какой даты?</p>
                 <div className="grid-container">
                     <input
                         type="date"

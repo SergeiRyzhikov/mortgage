@@ -2,148 +2,56 @@ import React, { useEffect, useState } from "react";
 import { useSurvey } from "../SurveyContext";
 import { useNavigate } from "react-router-dom";
 import "../styles/Result.css";
-import { countUnder18, countUnder6, findAmount, findCurrentPayment, getYearsDeclension, monthsSince } from "../utils";
+import { checkFinNagruzka, findAmount, findCurrentPayment, findTypesOfCredit, getYearsDeclension, monthsSince } from "../utils";
 
 const Result: React.FC = () => {
-    // const { answers, clearAnswers } = useSurvey();
+    const { answers, clearAnswers } = useSurvey();
     const navigate = useNavigate();
     const [reasons, setReasons] = useState<string[]>([])
     const [recommendations, setRecommendations] = useState<string[]>([])
     const [isApproved, setIsApproved] = useState<boolean>()
     const [isCreditType, setIsCreditType] = useState<boolean>(true)
-    const [isCreditScore, setIsCreditScore] = useState<boolean>(false)
-    const answers = {
-        "credit_type": "Ипотека",
-        "mortgage_type": "Арктическая",
-        "term": "15",
-        "amount": "10000000",
-        "initial_payment": "2000000",
-        "procent": "6",
-        "maxTerm": "20",
-        "region": "Астраханьская область",
-        "resident": "Да",
-        "judge": "Да|Нет",
-        "FSSP": "Да",
-        "bankSalaryman": "Да|Банк ВТБ",
-        "creditScore": "0",
-        "доп1": "[\"Ипотека\",\"Кредитная карта\"]",
-        "доп2": "3",
-        "доп3": "[2,3,5]",
-        "доп31": "1",
-        "доп4": "[123123]",
-        "доп5": "Да",
-        "доп6": "Да",
-        "доп7": "Нет",
-        "доп8": "+",
-        "dateBirth": "1999-01-01",
-        "family": "Холост",
-        "amountChildren": "2",
-        "childrenBirth": "2005-10-10,2020-10-10",
-        "dependents": "2",
-        "salary": "Комбинированная|600000",
-        "salaryExtra": "300000",
-        "experience": "2020-01-01",
-        "work": "Врач",
-        "education": "Высшее",
-        "availability": "[\"Автомобиль\",\"Квартира/Дом\",\"Земельный участок\"]"
-    }
-    const regionsDFO = ["Бурятия", "Саха (Якутия)", "Забайкальский край", "Камчатский край", "Приморский край", "Хабаровский край", "Амурская область", "Магаданская область", "Сахалинская область", "Еврейская автономная область", "Чукотский автономный округ"]
-    const regionsArctika = ["Мурманская область", "Ненецкий автономный округ", "Ямало-Ненецкий автономный округ", "Карелия", "Коми", "Архангельская область", "Красноярский край"]
-    const findTypesOfCredit = (dateBirth: string, region: string, childrenBirth: string, family: string, amountOfChildren: number, work: string) => {
-        const givenDate = new Date(dateBirth)
-        const currentDate = new Date()
-        const age = currentDate.getFullYear() - givenDate.getFullYear()
-        const typesOfCredit = ['Нельготная']
-        let children = 0
-        let childrenUnder6 = 0
-        if (amountOfChildren !== 0) {
-            children = countUnder18(childrenBirth)
-            childrenUnder6 = countUnder6(childrenBirth)
-        }
-        if (age <= 21 || age >= 65) {
-            return []
-        }
-        if (regionsDFO.includes(region)) {
-            if ((family === 'Женат/замужем' && age <= 35) || (family === 'Холост' && children >= 1)) {
-                typesOfCredit.push('Дальневосточная')
-            }
-            if (work === 'Врач' || work === 'Учитель') {
-                typesOfCredit.push('Дальневосточная')
-            }
-        }
+    const [isCreditScore, setIsCreditScore] = useState<boolean>(true)
+    const [reasonsRejectedType, setReasonsRejectedType] = useState<string[]>([])
+    // const answers = {
+    //     "credit_type": "Ипотека",
+    //     "mortgage_type": "Семейная",
+    //     "term": "10",
+    //     "amount": "10000000",
+    //     "initial_payment": "2000000",
+    //     "procent": "6",
+    //     "maxTerm": "20",
+    //     "region": "Астраханьская область",
+    //     "resident": "Да",
+    //     "judge": "Да|Нет",
+    //     "FSSP": "Да",
+    //     "bankSalaryman": "Да|Банк ВТБ",
+    //     "creditScore": "0",
+    //     'isYears': 'нет',
+    //     "доп1": "[\"Ипотека\",\"Кредитная карта\"]",
+    //     "доп2": "3",
+    //     "доп3": "[2,3,5]",
+    //     "доп31": "1",
+    //     "доп4": "[123123]",
+    //     "доп5": "Да",
+    //     "доп6": "Да",
+    //     "доп7": "Нет",
+    //     "доп8": "-",
+    //     "dateBirth": "1999-01-01",
+    //     "family": "Холост",
+    //     "amountChildren": "0",
+    //     "childrenBirth": "2005-10-10,2020-10-10",
+    //     "dependents": "2",
+    //     "salary": "Комбинированная|600000",
+    //     "salaryExtra": "150000",
+    //     "experience": "2020-01-01",
+    //     "work": "Врач",
+    //     "education": "Высшее",
+    //     "availability": "[\"Автомобиль\",\"Квартира/Дом\",\"Земельный участок\"]",
+    //     "hasDeposit": 'Нет',
+    //     'has50': 'Нет'
+    // }
 
-        if (children >= 2 || childrenUnder6 >= 1) {
-            typesOfCredit.push('Семейная')
-        }
-        if (work === 'IT' && age <= 50) {
-            typesOfCredit.push('IT')
-        }
-
-        if (regionsArctika.includes(region)) {
-            console.log('проживает')
-            if ((family === 'Женат/замужем' && age <= 35) || (family === 'Холост' && children >= 1)) {
-                typesOfCredit.push('Арктическая')
-            }
-            if (work === 'Врач' || work === 'Учитель') {
-                typesOfCredit.push('Арктическая')
-            }
-        }
-        return typesOfCredit
-    }
-
-    const checkFinNagruzka = (
-        currentPayment: number,
-        limits: number[],
-        payments: number[],
-        amountOfChildren: number,
-        amountOfDependents: number,
-        birthOfChildren: string,
-        family: string,
-        salary: number
-    ): [boolean, number] => {
-
-        let s = 0
-        let amountOfPeople = 0
-
-        if (amountOfChildren !== 0) {
-            const children = countUnder18(birthOfChildren)
-            amountOfPeople += children
-        }
-
-        amountOfPeople += amountOfDependents
-
-        amountOfPeople += family === 'Холост' ? 1 : 2
-
-        if (limits.length !== 0) {
-            s += limits.reduce((partialSum: number, a: number) => partialSum + a, 0) / 10
-        }
-        if (payments.length !== 0) {
-            s += payments.reduce((partialSum: number, a: number) => partialSum + a, 0)
-        }
-        s += currentPayment
-
-        if (s >= 90000) {
-            s += amountOfPeople * 20000
-
-            s *= 2
-            if (s < salary) {
-                return [true, 0]
-            }
-            else {
-
-                return [false, (s - salary) / 2]
-            }
-        }
-        else {
-            if (s <= 0.3 * salary) {
-                return [true, 0]
-            }
-            else {
-
-                return [false, Math.round(s - 0.3 * salary)]
-            }
-        }
-    }
 
     const commonRecommendations = (isCreditsBefore: string, isRejectsBefore: string) => {
         // общие рекомендации
@@ -159,23 +67,43 @@ const Result: React.FC = () => {
     }
 
     const mainTree = () => {
-        const creditScore = Number(answers['creditScore'])
-        const expirations = answers['доп8']
+
         const creditType = answers['credit_type']
         let isOk = true
 
         if (creditType === 'Микрозайм') {
+            const creditScore = Number(answers['creditScore'])
+            let expirations = answers['доп8']
             if (expirations === '-') {
                 isOk = false
                 setRecommendations(recommendations => [...recommendations, 'С момента последней просрочки должно пройти 3 платежа.'])
             }
-            if (creditScore < 500) {
-                isOk = false
-                setRecommendations(recommendations => [...recommendations, 'Поднять кредитный рейтинг.'])
+            if (creditScore !== 0) {
+                if (creditScore < 500) {
+                    isOk = false
+                    setRecommendations(recommendations => [...recommendations, 'Поднять кредитный рейтинг.'])
+                }
+            }
+            else {
+                setIsCreditScore(false)
+                // setReasons(reasons => [...reasons, `Результат может быть неточным из-за отсутствия данных о кредитном рейтинге.`])
             }
             setIsApproved(isOk)
             return
-
+        }
+        let hasDeposit: string;
+        if (creditType === 'Кредит под залог') {
+            hasDeposit = answers['hasDeposit']
+            if (hasDeposit === 'Нет') {
+                setRecommendations(recommendations => [...recommendations, 'Для кредита под залог необходимо иметь имущество в виде квартиры или дома.'])
+                setReasons(reasons => [...reasons, 'Отсутствует имущество под залог'])
+                isOk = false
+                setIsApproved(isOk)
+                return
+            }
+            else {
+                setRecommendations(recommendations => [...recommendations, 'Имущество оценивается со стороны банка, отсюда и формулировка "50% от оценочной стоимости".'])
+            }
         }
         // В "Итог": 1. Микрозайм не дадут   В "Рекомендации": 1.(если ответил, что есть активные просрочки) 2. (если ответил, что он ниже 500)
         const [residentRF, residentPermit] = answers['resident'].split('|')
@@ -191,26 +119,32 @@ const Result: React.FC = () => {
         const family = answers['family']
         const salary = Number(salaryString)
         const procent = Number(answers['procent'])
-        const term = Number(answers['term'])
+        let term = Number(answers['term'])
         let amount = Number(answers['amount'])
+        const isYears = answers['isYears']
+        term = isYears === 'да' ? term : term / 12
         const dateBirth = answers['dateBirth']
         const FSSP = answers['FSSP']
         const region = answers['region']
         const experience = monthsSince(answers['experience'])
         const isCreditsBefore = answers['доп5']
         const isRejectsBefore = answers['доп6']
+        const creditScore = Number(answers['creditScore'])
+        let expirations = answers['доп8']
 
-
+        // Проверяем фин. нагрузку и остальные критерии как у ипотеки, кроме детей, иждивенцев, сферы деятельности и наличия машины или квартиры   В "Рекомендации": 1. 
+        // Кредит не одобрят   В "Итог": 1.    "Рекомендации": 1. 
         let maxTerm: number
         let initial_payment = 0
+
         if (creditType === 'Ипотека') {
             maxTerm = Number(answers['maxTerm'])
             initial_payment = Number(answers['initial_payment'])
             const mortgage_type = answers['mortgage_type']
-            const typesOfCredit = findTypesOfCredit(dateBirth, region, birthOfChildren, family, amountOfChildren, typeWork)
-            console.log(typesOfCredit)
-            if (!typesOfCredit.includes(mortgage_type)) {
+            const [isCreditTypeOk, reasons] = findTypesOfCredit(dateBirth, region, birthOfChildren, family, amountOfChildren, typeWork, mortgage_type)
+            if (!isCreditTypeOk) {
                 setIsCreditType(false)
+                setReasonsRejectedType(reasons)
             }
         }
         else {
@@ -244,9 +178,12 @@ const Result: React.FC = () => {
 
         // В "Рекомендации" дополнительно пишем: 1. Желательно иметь высшее образование 2. Больше года быть замужем/женатым 3. Отсутствие иждивенцев будет плюсом 4. Если являетесь самозанятым, то нужны подтверждающие документы 5. Преимуществом будет иметь своё преимущество 6. Подготовьте контактное лицо
         if (residentRF === 'Нет') {
-            if (residentPermit === 'Нет' || typeSalary !== 'Официальная') {
+            if (residentPermit === 'Нет') {
                 setReasons(reasons => [...reasons, 'Отсуствие вида на жительства и регистрации.'])
                 isOk = false
+            }
+            if (typeSalary === 'Неофицальная') {
+                setReasons(reasons => [...reasons, 'Неофицальная зарабатная плата'])
             }
         }
 
@@ -257,7 +194,7 @@ const Result: React.FC = () => {
         }
         if (FSSP === 'Да') {
             isOk = false
-            setReasons(reasons => [...reasons, 'Наличие исправительного производства'])
+            setReasons(reasons => [...reasons, 'Наличие исполнительного производства'])
             setRecommendations(recommendations => [...recommendations, 'Проверить, что производство убрали с сайта ФССП'])
         }
 
@@ -288,7 +225,32 @@ const Result: React.FC = () => {
             const salaryExtra = Number(answers['salaryExtra'])
             let [isFinOk, deficit] = checkFinNagruzka(currentPayment, limits, payments, amountOfChildren, amountOfDependents, birthOfChildren, family, salary - salaryExtra)
             if (!isFinOk) {
-                setReasons(reasons => [...reasons, `Не хватает ${deficit.toLocaleString('ru-RU')} рублей официальной заработной платы. Возьмите справку по форме банка на всю сумму.Так как общая комбинированная зарплата финансовой нагрузке соответствует.`])
+                setReasons(reasons => [...reasons, `Не хватает ${deficit.toLocaleString('ru-RU')} рублей официальной заработной платы. Стоит взять справку по форме банка на всю сумму.Так как общая комбинированная зарплата финансовой нагрузке соответствует.`])
+                if (currentPayment - deficit > 0) {
+                    console.log('yes')
+                    let newTerm = 0;
+                    let newCurrentPayment = 0;
+                    for (let i = Math.round(term); i <= maxTerm; i++) {
+                        newCurrentPayment = findCurrentPayment(i, procent, initial_payment, amount)
+                        if (currentPayment - newCurrentPayment >= deficit) {
+                            console.log(i)
+                            newTerm = i
+                            break
+                        }
+                    }
+                    if (newTerm !== 0) {
+                        // только увеличиваем срок кредита
+                        // Если подать заявку в банк только по официальной зарплате:
+                        // а) Вам уменьшат сумму до ...
+                        // б) Увеличат срок до ...
+                        setReasons(reasons => [...reasons, `Если подать заявку в банк только по официальной зарплате: | Увеличат срок кредита до ${newTerm} ${getYearsDeclension(newTerm)}`])
+                    }
+                    else {
+                        newCurrentPayment = currentPayment - deficit
+                        const amount = findAmount(newCurrentPayment, maxTerm, initial_payment, procent)
+                        setReasons(reasons => [...reasons, `Если подать заявку в банк только по официальной зарплате: | a) Увеличат срок кредита до ${maxTerm} ${getYearsDeclension(maxTerm)} | б) Вам уменьшат сумму до ${amount.toLocaleString('ru-RU')} руб`])
+                    }
+                }
             }
         }
 
@@ -308,7 +270,7 @@ const Result: React.FC = () => {
             else {
                 let newTerm = 0;
                 let newCurrentPayment = 0;
-                for (let i = term; i <= maxTerm; i++) {
+                for (let i = Math.round(term); i <= maxTerm; i++) {
                     newCurrentPayment = findCurrentPayment(i, procent, initial_payment, amount)
                     if (currentPayment - newCurrentPayment >= deficit) {
                         newTerm = i
@@ -354,8 +316,8 @@ const Result: React.FC = () => {
             }
         }
         else {
-            // setIsCreditScore(false)
-            setReasons(reasons => [...reasons, `Результат может быть неточным из-за отсутствия данных о кредитном рейтинге.`])
+            setIsCreditScore(false)
+            // setReasons(reasons => [...reasons, `Результат может быть неточным из-за отсутствия данных о кредитном рейтинге.`])
         }
 
         commonRecommendations(isCreditsBefore, isRejectsBefore)
@@ -385,18 +347,33 @@ const Result: React.FC = () => {
             <h1 className={`approval-title ${isApproved ? "approved" : "declined"}`}>
                 {isApproved ? "Будет одобрено" : "Будет отказ"}
             </h1>
+            {isCreditScore === false &&
+                <div className="recommendation-box">
+                    <h2>Результат может быть неточным из-за отсутствия данных о кредитном рейтинге.</h2>
+
+                </div>
+            }
             {reasons.length !== 0 &&
                 <div className="result-box">
                     <h2>Причины</h2>
                     <ul>
-                        {reasons.map((reason, index) => (
-                            <li key={index}>{reason}</li>
-                        ))}
+                        {reasons.map((reason, index) =>
+                            reason.startsWith('Если подать заявку в банк только по официальной зарплате') ? (
+                                reason.split('|').map((r, ind) =>
+                                    <React.Fragment key={`${index}-${ind}`}>
+                                        {r}<br />
+                                    </React.Fragment>
+                                )
+                            ) : (
+                                <li key={index}>{reason}</li>
+                            )
+                        )}
                     </ul>
                 </div>
             }
 
-            {recommendations.length !== 0 &&
+            {
+                recommendations.length !== 0 &&
                 <div className="recommendation-box">
                     <h2>Рекомендации</h2>
                     <ul>
@@ -406,7 +383,8 @@ const Result: React.FC = () => {
                     </ul>
                 </div>
             }
-            {isCreditScore === false &&
+            {
+                isCreditScore === false &&
                 <div className="recommendation-box">
                     <h2>Причины проверить кредитную историю</h2>
                     <p>
@@ -414,26 +392,24 @@ const Result: React.FC = () => {
                     </p>
                     <p>Кредитная история — это информация о ваших кредитных обязательствах. Она показывает, в какие банки или микрофинансовые организации вы обращались за кредитами и займами, когда это было и какие суммы вы брали.</p>
                     <p>
-                        1️⃣ Как часто обновляется КИ?
+                        1️⃣ Как часто обновляется КИ? <br></br>Кредиторы обязаны обновлять данные в БКИ в течение 5 рабочих дней.
                     </p>
-                    <p>По закону кредиторы обязаны вносить информацию в БКИ в течение 5 рабочих дней. Например, если вы закрыли автокредит в понедельник, то банк должен будет сообщить об этом в бюро до выходных.</p>
-                    <p>2️⃣ Я добросовестно выплачивал кредиты, но у меня плохая кредитная история. Почему?</p>
-                    <p>К сожалению, такое случается. Причин «ошибок» может быть много: <br></br>
-                        1. Кредитная история еще не обновилась;<br></br>
-                        2. Кредит по карте погашен, но карта не закрыта;<br></br>
-                        3. Когда-то давно вы взяли кредит, закрыли и забыли про него
-                        Но оказывается, что осталась маленькая непогашенная сумма за страховку или комиссию. И банк вам об этом не сообщил. В итоге в вашей кредитной истории числится просрочка;<br></br>
-                        4. Сотрудники банка или бюро ошиблись - человеческий фактор.<br></br></p>
-                    <p>3️⃣ Если у меня и вправду плохая кредитная история. Что делать? </p>
-                    <p>Удалить что-либо из кредитной истории нельзя. Но, если вы хотите и дальше кредитоваться, ее можно улучшить. Берите совсем небольшие кредиты или займы и очень аккуратно их гасите. Оформите кредитную карту или купите в кредит бытовую технику.</p>
+                    <p>2️⃣ Почему у меня плохая КИ, если я всё выплачивал? <br></br>Возможные причины: данные еще не обновились, не закрыта кредитная карта, остался незамеченный долг, ошибка банка или бюро. </p>
+                    <p>3️⃣ Что делать с плохой КИ? <br></br>Улучшайте её, беря небольшие кредиты и вовремя их погашая.</p>
                 </div>
             }
-            {isCreditType === false &&
+            {
+                isCreditType === false &&
                 <div className="recommendation-box">
                     <h2>Программа ипотеки</h2>
                     <p>
-                        Скорее всего, вы не подходите под условия, выбранной ипотеки. Попробуйте выбрать другую.
+                        Скорее всего, вы не подходите под условия выбранной ипотеки. Попробуйте выбрать другую.
                     </p>
+                    <ul>
+                        {reasonsRejectedType.map((rec, index) => (
+                            <li key={index}>{rec}</li>
+                        ))}
+                    </ul>
 
                     <button onClick={handlerNewCredit} className="button">
                         Выбрать программу
@@ -444,10 +420,8 @@ const Result: React.FC = () => {
             <button onClick={handlerEnd} className="button" >
                 Завершить
             </button>
-        </div>
+        </div >
     );
 };
 
 export default Result;
-
-

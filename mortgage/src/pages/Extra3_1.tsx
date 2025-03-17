@@ -9,6 +9,11 @@ const Extra3_1: React.FC = () => {
     const { answers, updateAnswer } = useSurvey();
 
     const handleContinue = () => {
+        if (firstAnswer == 0) {
+            updateAnswer('доп31', `0`)
+            navigate('/extra5')
+            return
+        }
         updateAnswer('доп31', `${firstAnswer}`)
         navigate('/extra4')
         console.log(answers)
@@ -19,6 +24,7 @@ const Extra3_1: React.FC = () => {
         console.log(typeOfCredits)
         if (!(typeOfCredits.includes('Ипотека') || typeOfCredits.includes('Потребительский кредит'))) {
             updateAnswer('доп31', `0`)
+            updateAnswer("доп4", JSON.stringify([0]));
             navigate('/extra5')
         }
     }, [])
@@ -28,7 +34,7 @@ const Extra3_1: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.3. Сколько действующих кредитов?</p>
+                <p className="question-text">Сколько действующих кредитов?</p>
                 <div className="grid-container">
                     <NumberInput
                         min={0}

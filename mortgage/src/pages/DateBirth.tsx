@@ -24,7 +24,7 @@ const DateBirth: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">10. Введите свою дату рождения</p>
+                <p className="question-text">Введите дату своего рождения</p>
                 <div className="grid-container">
                     <input
                         type="date"

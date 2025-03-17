@@ -34,7 +34,7 @@ const Pdf: React.FC = () => {
         <div className="container" >
             <h1 className="title">Анкета</h1>
             <div className="question">
-                <p className="question-text">4. Загрузите PDF-файл кредитной истории, если его нет, также жмите продолжить</p>
+                <p className="question-text">Загрузите PDF-файл кредитной истории, если его нет, также жмите продолжить</p>
                 <label className="custom-file-upload">
                     <input type="file" accept="application/pdf" onChange={handleFileChange} />
                     {file ?

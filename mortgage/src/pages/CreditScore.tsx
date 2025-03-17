@@ -5,6 +5,7 @@ import NumberInput from "../components/NumberInput/NumberInput";
 
 const CreditScore: React.FC = () => {
     const [firstAnswer, setFirstAnswer] = useState<number>(0);
+   
     const navigate = useNavigate();
     const { answers, updateAnswer } = useSurvey();
 
@@ -34,6 +35,7 @@ const CreditScore: React.FC = () => {
                     />
                 </div>
             </div>
+
             <button onClick={handleContinue} className="button">
                 Продолжить
             </button>

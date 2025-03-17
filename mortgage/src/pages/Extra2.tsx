@@ -21,6 +21,7 @@ const Extra2: React.FC = () => {
             // console.log('nav')
             updateAnswer('доп2', `0`)
             updateAnswer('доп3', `[0]`)
+            
             navigate('/extra3_1')
         }
     }, [])
@@ -30,7 +31,7 @@ const Extra2: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.2. Сколько кредитных карт?</p>
+                <p className="question-text">Сколько кредитных карт?</p>
                 <div className="grid-container">
                     <NumberInput
                         min={0}

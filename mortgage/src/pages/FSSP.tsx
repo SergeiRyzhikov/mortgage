@@ -5,7 +5,7 @@ const Question3: React.FC = () => {
     return (
         <QuestionCard
             choiceTypes={['Да', 'Нет']}
-            questionText='5. Есть ли у Вас исполнительные производства в ФССП?'
+            questionText='5. Есть ли у Вас исполнительные производства в ФССП (Федеральная служба судебных приставов)?'
             answerId={'FSSP'}
             navigatePath={'/6'}
         />

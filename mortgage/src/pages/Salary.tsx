@@ -50,7 +50,7 @@ const Salary: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">15. Укажите тип своей заработной платы</p>
+                <p className="question-text">Укажите тип своей заработной платы</p>
                 <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <div

@@ -39,7 +39,7 @@ const Extra1: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.1. Что брали из действующих кредитов?</p>
+                <p className="question-text">Что брали из действующих кредитов?</p>
                 <div className="grid-container">
                     <Card
                         isSelected={selectedAnswers.includes("Потребительский кредит")}

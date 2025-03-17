@@ -34,7 +34,7 @@ const Extra3: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question" style={{ width: 'auto' }}>
-                <p className="question-text">4.3. Какие лимиты по картам?</p>
+                <p className="question-text">Какие лимиты по картам?</p>
                 <div className="input-list">
                     {limits.map((limit, index) => (
                         <div key={index} className="input-wrapper">

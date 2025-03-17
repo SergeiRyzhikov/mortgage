@@ -4,12 +4,12 @@ import { useSurvey } from "../SurveyContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import Error from "../components/Error/Error";
 import NumberInput from "../components/NumberInput/NumberInput";
-import { getYearsDeclension, mortgageTypes } from "../utils";
+import { getMonthDeclension, getYearsDeclension, mortgageTypes } from "../utils";
 
 const MortgageSelection: React.FC = () => {
     const [selectedCreditType, setSelectedCreditType] = useState<string | null>(null);
     const [selectedMortgage, setSelectedMortgage] = useState<string | null>(null);
-    const [term, setTerm] = useState<number>(10);
+    const [term, setTerm] = useState<number>(5);
     const [amount, setAmount] = useState<number>(1000000);
     const [initialPayment, setInitialPayment] = useState<number>(0);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -17,8 +17,29 @@ const MortgageSelection: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { state } = location.state || {};
-    const creditTypes = ["Ипотека", "Потребительский кредит", "Авто-кредит", "Микрозайм"];
-    console.log(state)
+    const creditTypes = ["Ипотека", "Потребительский кредит", "Авто-кредит", "Микрозайм", 'Кредит под залог'];
+
+    function getWords(years: number): string {
+        if (selectedCreditType === 'Ипотека') {
+            return getYearsDeclension(years)
+        }
+        else {
+            if (years <= 12) {
+                return getMonthDeclension(years)
+            }
+            else {
+                return getYearsDeclension(years - 12)
+            }
+        }
+    }
+    const getVisibleTerm = (term: number) => {
+        if (selectedCreditType === "Ипотека") {
+            return term
+        }
+        else {
+            return term > 12 ? term - 12 : term
+        }
+    }
 
     const handleSelectCreditType = (type: string) => {
         setSelectedCreditType(type);
@@ -32,6 +53,11 @@ const MortgageSelection: React.FC = () => {
     };
 
     const handleContinue = () => {
+        if (selectedCreditType === 'Кредит под залог') {
+            updateAnswer("credit_type", selectedCreditType);
+            navigate('/CreditDeposit')
+            return
+        }
         if (!selectedCreditType || (selectedCreditType === "Ипотека" && !selectedMortgage) || !term || !amount) {
             setErrorMessage("Пожалуйста, заполните все поля.");
             return;
@@ -55,8 +81,22 @@ const MortgageSelection: React.FC = () => {
         updateAnswer("credit_type", selectedCreditType);
         if (selectedCreditType === "Ипотека") {
             updateAnswer("mortgage_type", selectedMortgage!);
+            updateAnswer("term", String(term));
+            updateAnswer("isYears", 'да')
         }
-        updateAnswer("term", String(term));
+        else {
+            if (term > 12) {
+                updateAnswer("term", String(term - 12));
+                updateAnswer("isYears", 'да')
+            }
+            else {
+                updateAnswer("term", String(term));
+                updateAnswer("isYears", 'нет')
+            }
+
+        }
+
+
         updateAnswer("amount", String(amount));
         updateAnswer("initial_payment", String(initialPayment));
 
@@ -66,6 +106,10 @@ const MortgageSelection: React.FC = () => {
 
 
         console.log(selectedCreditType)
+        if (selectedCreditType === "Микрозайм") {
+            navigate("/7");
+            return
+        }
         if (selectedCreditType !== "Ипотека") {
             navigate("/salaryConf");
             return
@@ -78,14 +122,30 @@ const MortgageSelection: React.FC = () => {
     };
 
     const getMaxTerm = () => {
-        if (selectedCreditType !== "Ипотека") return 30;
-        const selected = mortgageTypes.find((mortgage) => mortgage.type === selectedMortgage);
-        return selected ? selected.maxTerm : 0;
+        if (selectedCreditType === "Ипотека") {
+            const selected = mortgageTypes.find((mortgage) => mortgage.type === selectedMortgage);
+            return selected ? selected.maxTerm : 0;
+        }
+        else {
+            return 19
+        }
+
+    };
+
+    const getVisibleMaxTerm = () => {
+        if (selectedCreditType === "Ипотека") {
+            const selected = mortgageTypes.find((mortgage) => mortgage.type === selectedMortgage);
+            return selected ? selected.maxTerm : 0;
+        }
+        else {
+            return 7
+        }
+
     };
 
     return (
         <div className="container">
-            <p className="question-text">1. Выберите тип кредита</p>
+            <p className="question-text">Выберите тип кредита</p>
             <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(2, 1fr)' }}>
                 {creditTypes.map((type) => (
                     <Card
@@ -109,17 +169,24 @@ const MortgageSelection: React.FC = () => {
                                 onClick={() => handleSelectMortgage(type)}
                             >
                                 <p className="card-text">{type}</p>
-                                <p className="card-details">{details}</p>
+                                <p className="card-details">
+                                    {details.map((text, index) => (
+                                        <React.Fragment key={index}>
+                                            {text}<br />
+                                        </React.Fragment>
+                                    ))}
+                                </p>
                             </Card>
                         ))}
                     </div>
                 </>
             )}
 
-            {(selectedMortgage || (selectedCreditType && selectedCreditType !== 'Ипотека')) &&
+            {(selectedMortgage || (selectedCreditType && selectedCreditType !== 'Ипотека')) && (selectedCreditType !== 'Кредит под залог')
+                &&
                 <div className="form">
                     <label className="form-label">
-                        Срок (лет, максимум {getMaxTerm()}):
+                        Срок (максимум {getVisibleMaxTerm()} лет):
                         <input
                             type="range"
                             value={term}
@@ -128,7 +195,7 @@ const MortgageSelection: React.FC = () => {
                             min="1"
                             max={getMaxTerm()}
                         />
-                        <span className="slider-value">{term} {getYearsDeclension(term)}</span>
+                        <span className="slider-value">{getVisibleTerm(term)} {getWords(term)}</span>
                     </label>
                     <NumberInput
                         min={0}

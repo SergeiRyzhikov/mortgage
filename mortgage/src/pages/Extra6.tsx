@@ -34,7 +34,7 @@ const Extra6: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4.6. Были ли отказы?</p>
+                <p className="question-text">Были ли отказы?</p>
                 <div className="grid-container">
                     <Card
                         isSelected={firstAnswer === "Да"}

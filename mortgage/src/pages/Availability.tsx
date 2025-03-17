@@ -41,7 +41,7 @@ const Availability: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">19. Наличие</p>
+                <p className="question-text">Наличие</p>
                 <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <Card

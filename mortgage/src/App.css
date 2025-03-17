@@ -40,7 +40,17 @@ body {
   max-width: 800px;
 }
 
-.button {
+/* .grid-container>*:last-child {
+  grid-column: 1 / -1;
+
+  justify-self: center;
+
+  text-align: center;
+
+  max-width: 200px; 
+} */
+
+.button, .button2 {
   margin-top: 1rem;
   background-color: #007bff;
   color: #fff;
@@ -53,7 +63,7 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.button:hover {
+.button:hover, .button2:hover {
   background-color: #0056b3;
 }
 
@@ -63,7 +73,7 @@ body {
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 430px;
 }
 
 .form-label {
@@ -286,12 +296,17 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .site-title {
-  font-size: 2.5rem; /* Уменьшили размер */
-  font-weight: 600; /* Сделали менее жирным */
-  color: #333; /* Более мягкий тёмный цвет */
+  font-size: 2.5rem;
+  /* Уменьшили размер */
+  font-weight: 600;
+  /* Сделали менее жирным */
+  color: #333;
+  /* Более мягкий тёмный цвет */
   text-align: center;
-  margin-bottom: 2rem; /* Больше отступа вниз */
+  margin-bottom: 2rem;
+  /* Больше отступа вниз */
   text-transform: uppercase;
-  letter-spacing: 1.5px; /* Чуть меньше расстояние между буквами */
-  
+  letter-spacing: 1.5px;
+  /* Чуть меньше расстояние между буквами */
+
 }

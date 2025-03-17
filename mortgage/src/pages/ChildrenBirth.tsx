@@ -36,7 +36,7 @@ const ChildrenBirth: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">13. Введите даты рождения всех детей</p>
+                <p className="question-text">Введите даты рождения всех детей</p>
                 <div className="grid-container" style={{ 'gridTemplateColumns': 'repeat(1, 1fr)' }}>
                     {firstAnswer.map((i, index) =>
                         <input

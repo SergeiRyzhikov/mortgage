@@ -34,6 +34,7 @@ import Extra3_1 from "./pages/Extra3_1";
 import QuestionSalaryConf from "./pages/QuestionSalaryConf";
 import QuestionPercent from "./pages/QuestionPercent";
 import GlobalCreditScore from "./pages/GlobalCreditScore";
+import CreditDeposit from "./pages/CreditDeposit";
 // import QuestionCard from "./components/QuestionCard";
 
 const App: React.FC = () => {
@@ -75,6 +76,7 @@ const App: React.FC = () => {
         <Route path="/extra8" element={<Extra8 />} />
         <Route path="/salaryConf" element={<QuestionSalaryConf />} />
         <Route path="/percent" element={<QuestionPercent />} />
+        <Route path="/CreditDeposit" element={<CreditDeposit />} />
         {/* Другие маршруты можно добавлять здесь */}
       </Routes>
     </SurveyProvider>

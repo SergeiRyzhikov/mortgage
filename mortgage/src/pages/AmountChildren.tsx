@@ -23,7 +23,7 @@ const AmountChildren: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">12. Количество детей, указанное в паспорте</p>
+                <p className="question-text">Количество детей, указанное в паспорте</p>
                 <div className="grid-container">
                     <NumberInput
                         min={0}

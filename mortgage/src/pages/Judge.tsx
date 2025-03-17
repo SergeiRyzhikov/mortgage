@@ -46,7 +46,7 @@ const Judge: React.FC = () => {
             <h1 className="title">Анкета</h1>
 
             <div className="question">
-                <p className="question-text">4. Есть ли у Вас судимость?</p>
+                <p className="question-text">Есть ли у Вас судимость?</p>
                 <div className="grid-container">
                     {choiceTypes.map((type) => (
                         <Card
